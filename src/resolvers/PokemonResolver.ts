@@ -7,6 +7,9 @@ export class PokemonResolver {
     description: "A list of pokemon",
   })
   async searchPokemon(): Promise<any> {
+    // check redis cache
+    // fetch pokemon search query
+    // run shakespeare check
     return [
       {
         id: 1,

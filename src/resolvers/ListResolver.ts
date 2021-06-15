@@ -1,28 +1,22 @@
-import { Pokemon } from "../entities/Pokemon";
-import { SavePokemonInput } from "../inputs/SavePokemonInput";
-import { Arg, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Field, InputType, Mutation, Resolver } from "type-graphql";
 import { List } from "../entities/List";
+
+@InputType()
+class CreateListInput {
+  @Field()
+  description!: string;
+}
 
 @Resolver()
 export class ListResolver {
-  @Query(() => List, {
-    description: "Saved list of Pokemon",
-  })
-  async getList(): Promise<any> {
-    return {
-      id: 1,
-      title: "123",
-      description: "123",
-    };
+  @Mutation(() => List)
+  async savePokemonToList(@Arg("input") input: CreateListInput): Promise<any> {
+    return List.create(input).save();
   }
-  @Mutation(() => Pokemon)
-  async savePokemon(@Arg("input") input: SavePokemonInput): Promise<any> {
-    // const pokemon = Pokemon.create(input);
-    // await pokemon.save();
-    return {
-      id: 1,
-      title: "123",
-      description: "123",
-    };
+  @Mutation(() => List)
+  async removePokemonFromList(
+    @Arg("input") input: CreateListInput
+  ): Promise<any> {
+    return List.create(input).save();
   }
 }

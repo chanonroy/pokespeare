@@ -1,18 +1,31 @@
-import { Field, Int, ObjectType } from "type-graphql";
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Field, ObjectType } from "type-graphql";
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+} from "typeorm";
+import { Pokemon } from "./Pokemon";
 
 @ObjectType()
 @Entity()
-export class List {
-  @Field(() => Int)
+export class List extends BaseEntity {
+  @Field({ nullable: true })
   @PrimaryGeneratedColumn()
-  id!: number;
+  id: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column()
-  title!: string;
+  description: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column()
-  description!: string;
+  userId: string;
+
+  @Field(() => [Pokemon])
+  @ManyToMany(() => Pokemon)
+  @JoinTable()
+  pokemon: Pokemon[];
 }
