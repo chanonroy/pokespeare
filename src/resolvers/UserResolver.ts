@@ -1,6 +1,6 @@
 import { compare, hash } from "bcryptjs";
 import { GraphQLError } from "graphql";
-import { createAccessToken } from "../token/getAccessToken";
+import { createAccessToken } from "../token/createAccessToken";
 import {
   Arg,
   Ctx,
@@ -16,6 +16,7 @@ import { User } from "../entities/User";
 import { isAuth } from "../middleware/isAuth";
 import { ServerContext } from "../@types";
 
+// TODO: consider putting these into their own folders
 @InputType()
 class SignUpInput {
   @Field()

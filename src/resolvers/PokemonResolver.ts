@@ -1,21 +1,20 @@
-import { Resolver, Query } from "type-graphql";
+import { Arg, Query, Resolver } from "type-graphql";
 import { Pokemon } from "../entities/Pokemon";
+import { parsePokemonInfo, pokemonClient } from "../services/pokemonClient";
 
 @Resolver()
 export class PokemonResolver {
-  @Query(() => [Pokemon], {
-    description: "A list of pokemon",
-  })
-  async searchPokemon(): Promise<any> {
-    // check redis cache
-    // fetch pokemon search query
-    // run shakespeare check
-    return [
-      {
-        id: 1,
-        title: "123",
-        description: "123",
-      },
-    ];
+  @Query(() => Pokemon)
+  async searchPokemon(@Arg("name") name: string) {
+    // consider keeping in redis cache
+
+    // Fetch information on pokemon
+    const response = await pokemonClient(name);
+    const pokemon = parsePokemonInfo(response);
+
+    // Run through shakespearean translator
+
+    // return results
+    return pokemon;
   }
 }

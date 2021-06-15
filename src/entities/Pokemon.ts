@@ -10,7 +10,7 @@ export class Pokemon extends BaseEntity {
 
   @Field()
   @Column()
-  title!: string;
+  name!: string;
 
   @Field()
   @Column()
