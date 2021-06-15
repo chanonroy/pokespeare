@@ -16,7 +16,12 @@ import { UserResolver } from "./resolvers/UserResolver";
     schema: await buildSchema({
       resolvers: [PokemonResolver, ListResolver, UserResolver],
     }),
-    context: ({ req, res }) => ({ req, res }),
+    context: ({ req }) => {
+      const context = {
+        req,
+      };
+      return context;
+    },
   });
 
   apolloServer.applyMiddleware({ app, cors: false });

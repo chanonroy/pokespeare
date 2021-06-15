@@ -1,25 +1,46 @@
-import { Arg, Field, InputType, Mutation, Query, Resolver } from "type-graphql";
+import { compare, hash } from "bcryptjs";
+import { GraphQLError } from "graphql";
+import { createAccessToken } from "../token/getAccessToken";
+import {
+  Arg,
+  Ctx,
+  Field,
+  InputType,
+  Mutation,
+  ObjectType,
+  Query,
+  Resolver,
+  UseMiddleware,
+} from "type-graphql";
 import { User } from "../entities/User";
+import { isAuth } from "../middleware/isAuth";
+import { ServerContext } from "../@types";
 
 @InputType()
 class SignUpInput {
   @Field()
-  email!: string;
+  emailAddress!: string;
 
   @Field()
   password!: string;
-
-  @Field()
-  confirmPassword!: string;
 }
 
 @InputType()
 class LoginInput {
   @Field()
-  email!: string;
+  emailAddress!: string;
 
   @Field()
   password!: string;
+}
+
+@ObjectType()
+class LoginOutput {
+  @Field()
+  user!: User;
+
+  @Field()
+  accessToken!: string;
 }
 
 @Resolver()
@@ -27,35 +48,63 @@ export class UserResolver {
   @Query(() => User, {
     description: "Get the current user",
   })
-  async getUser(): Promise<any> {
-    const user = await User.findOne(1);
+  @UseMiddleware(isAuth)
+  async me(@Ctx() ctx: ServerContext): Promise<User | null> {
+    const emailAddress = ctx.payload?.emailAddress;
+
+    const user = await User.findOne({ where: { emailAddress } });
+    if (!user) return null;
     return user;
   }
 
   @Mutation(() => User, {
     description: "Create new user and return userToken",
   })
-  async signUp(@Arg("input") input: SignUpInput): Promise<any> {
-    // validate
-    // return userToken
-    return {};
+  async signUp(@Arg("input") input: SignUpInput): Promise<LoginOutput> {
+    const { emailAddress, password } = input;
+
+    const hashedPassword = await hash(password, 12);
+
+    try {
+      const user = await User.create({
+        emailAddress,
+        password: hashedPassword,
+      }).save();
+
+      const accessToken = createAccessToken(user);
+
+      return {
+        user,
+        accessToken,
+      };
+    } catch {
+      throw new GraphQLError("An error has occurred");
+    }
   }
 
-  @Mutation(() => User, {
-    description: "Use email and password to generate userToken",
+  @Mutation(() => LoginOutput, {
+    description: "Use email and password to receive an accessToken",
   })
-  async login(@Arg("input") input: LoginInput): Promise<any> {
-    // invalidate session
-    // return true
-    return {};
-  }
+  async login(@Arg("input") input: LoginInput): Promise<LoginOutput> {
+    const { emailAddress, password } = input;
 
-  @Mutation(() => User, {
-    description: "End the user session",
-  })
-  async logout(): Promise<any> {
-    // validate
-    // return userToken
-    return {};
+    const user = await User.findOne({ where: { emailAddress } });
+
+    if (!user) {
+      throw new GraphQLError("Your email and password combo is incorrect");
+    }
+
+    const verify = await compare(password, user.password);
+
+    if (!verify) {
+      throw new GraphQLError("Your email and password combo is incorrect");
+    }
+
+    const accessToken = createAccessToken(user);
+
+    return {
+      user,
+      accessToken,
+    };
   }
 }

@@ -2,5 +2,6 @@
   "type": "sqlite",
   "database": "./db.sqlite3",
   "entities": ["./src/entities/*.ts"],
-  "synchronize": true
+  "synchronize": true,
+  "logging": true
 }
