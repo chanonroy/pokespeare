@@ -15,6 +15,8 @@ import {
 import { User } from "../entities/User";
 import { isAuth } from "../middleware/isAuth";
 import { ServerContext } from "../@types";
+import { List } from "../entities/List";
+import { AuthenticationError } from "apollo-server-express";
 
 // TODO: consider putting these into their own folders
 @InputType()
@@ -54,11 +56,14 @@ export class UserResolver {
     const emailAddress = ctx.payload?.emailAddress;
 
     const user = await User.findOne({ where: { emailAddress } });
-    if (!user) return null;
+
+    if (!user) {
+      throw new AuthenticationError("You are not authorized to access");
+    }
     return user;
   }
 
-  @Mutation(() => User, {
+  @Mutation(() => LoginOutput, {
     description: "Create new user and return userToken",
   })
   async signUp(@Arg("input") input: SignUpInput): Promise<LoginOutput> {
@@ -67,10 +72,24 @@ export class UserResolver {
     const hashedPassword = await hash(password, 12);
 
     try {
+      // create new user
       const user = await User.create({
         emailAddress,
         password: hashedPassword,
-      }).save();
+      });
+
+      // console.log(user);
+
+      // // create list for that user
+      // const list = await List.create().save();
+
+      // console.log(list);
+
+      // // save list to that user
+      // user.list = list;
+      // user.save();
+
+      // console.log(user.id);
 
       const accessToken = createAccessToken(user);
 

@@ -1,7 +1,7 @@
 import fetch from "node-fetch";
 
 // https://pokeapi.co/docs/v2#pokemon-species
-interface PokemonClientResponse {
+interface PokemonApiResponse {
   status: number;
   body: {
     id?: string;
@@ -10,9 +10,9 @@ interface PokemonClientResponse {
   };
 }
 
-export const pokemonClient = async (
+export const getPokemonFromName = async (
   name: string
-): Promise<PokemonClientResponse> => {
+): Promise<PokemonApiResponse> => {
   const response = await fetch(
     `https://pokeapi.co/api/v2/pokemon-species/${name}`,
     {
@@ -30,7 +30,7 @@ export const pokemonClient = async (
 };
 
 export const parsePokemonInfo = (
-  response: PokemonClientResponse
+  response: PokemonApiResponse
 ): {
   id: string | undefined;
   description: string | undefined;
