@@ -12,8 +12,13 @@ export const isAuth: MiddlewareFn<ServerContext> = ({ context }, next) => {
   }
 
   try {
+    // receive token
     const token = accessToken.split(" ")[1];
+
+    // verify that we signed the token
     const payload = verify(token, "secret"); // TODO: add secret key
+
+    // add token to context
     context.payload = payload as DecodedAccessToken;
   } catch (err) {
     throw new AuthenticationError("A valid user token is required");
