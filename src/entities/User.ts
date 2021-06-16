@@ -13,7 +13,7 @@ import { Pokemon } from "./Pokemon";
 @Entity()
 export class User extends BaseEntity {
   @Field(() => String)
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn("uuid")
   id!: string;
 
   @Field()

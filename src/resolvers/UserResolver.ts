@@ -60,7 +60,7 @@ class SavePokemonInput {
 }
 
 @InputType()
-class RemovePokemonFromListInput {
+class UnsavePokemonInput {
   @Field(() => String)
   id!: string;
 }
@@ -196,9 +196,9 @@ export class UserResolver {
     description: "Remove pokemon from the user's saved list",
   })
   @UseMiddleware(isAuth)
-  async removePokemon(
+  async unsavePokemon(
     @Ctx() ctx: ServerContext,
-    @Arg("input") input: RemovePokemonFromListInput
+    @Arg("input") input: UnsavePokemonInput
   ): Promise<User> {
     const userId = ctx.payload?.id;
 
