@@ -4,8 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node-dev --files --transpile-only src/index.ts",
-    "lint": ""
+    "start": "ts-node-dev --files --transpile-only --require=dotenv/config src/index.ts",
+    "test": "jest",
+    "lint": "tsc --noEmit && eslint . --ext .js,.ts"
   },
   "dependencies": {
     "apollo-server-express": "^2.25.1",
