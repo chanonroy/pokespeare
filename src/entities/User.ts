@@ -1,13 +1,13 @@
-import { Field, ID, ObjectType } from "type-graphql";
+import { Field, ObjectType } from "type-graphql";
 import {
   BaseEntity,
   Column,
   Entity,
-  JoinColumn,
-  OneToOne,
+  JoinTable,
+  ManyToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { List } from "./List";
+import { Pokemon } from "./Pokemon";
 
 @ObjectType()
 @Entity()
@@ -23,8 +23,8 @@ export class User extends BaseEntity {
   @Column()
   password!: string;
 
-  @Field()
-  @OneToOne(() => List, (list) => list.userId)
-  @JoinColumn()
-  list!: List;
+  @Field(() => [Pokemon], { nullable: true })
+  @ManyToMany(() => Pokemon)
+  @JoinTable()
+  pokemon: Pokemon[];
 }
