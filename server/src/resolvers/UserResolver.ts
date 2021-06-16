@@ -19,7 +19,6 @@ import { User } from "../entities/User";
 import { isAuth } from "../middleware/isAuth";
 import { createAccessToken } from "../token/createAccessToken";
 
-// TODO: consider putting these into their own folders
 @InputType()
 class SignUpInput {
   @Field()

@@ -1,4 +1,15 @@
+import { ServerContext } from "../@types";
+
+// const mockContext = {
+//   payload: {
+//     id: "123",
+//   },
+// } as ServerContext;
+
 describe("UserResolver", () => {
+  describe("me()", () => {
+    it.todo("returns user data");
+  });
   describe("signUp()", () => {
     it.todo("creates a new user and returns an accessToken");
     it.todo("throws error when a user already exists");
