@@ -10,6 +10,8 @@ interface PokemonApiResponse {
   };
 }
 
+export class PokemonNotFoundError extends Error {}
+
 export const getPokemonFromName = async (
   name: string
 ): Promise<PokemonApiResponse> => {
@@ -22,6 +24,10 @@ export const getPokemonFromName = async (
       },
     }
   );
+
+  if (response.status === 404) {
+    throw new PokemonNotFoundError();
+  }
 
   if (response.status !== 200) {
     throw new Error("An error has occurred");

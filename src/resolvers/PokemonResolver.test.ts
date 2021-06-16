@@ -1,5 +1,9 @@
 import { mocked } from "ts-jest/utils";
-import { getPokemonFromName, parsePokemonInfo } from "../services/pokemon-api";
+import {
+  getPokemonFromName,
+  parsePokemonInfo,
+  PokemonNotFoundError,
+} from "../services/pokemon-api";
 import { PokemonResolver } from "./PokemonResolver";
 
 jest.mock("../services/pokemon-api");
@@ -21,6 +25,14 @@ describe("PokemonResolver", () => {
     const result = await resolver.searchPokemon("ditto");
 
     expect(result).toEqual(resultMock);
+  });
+  it("returns empty object when search results come back false", async () => {
+    mocked(getPokemonFromName).mockRejectedValueOnce(
+      new PokemonNotFoundError()
+    );
+    const resolver = new PokemonResolver();
+    const result = await resolver.searchPokemon("fakePokemon");
+    expect(result).toEqual({});
   });
   it("handles error with pokemon api", async () => {
     // mock api call

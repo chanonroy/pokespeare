@@ -5,8 +5,8 @@ describe("UserResolver", () => {
   });
   describe("login()", () => {
     it.todo("returns accessToken when user exists and credentials are valid");
-    it.todo("throws a vague error when user does not exist");
-    it.todo("throws a vague error when passwords are invalid");
+    it.todo("throws a generic error when user does not exist");
+    it.todo("throws a generic error when passwords are invalid");
   });
   describe("savePokemon()", () => {
     it.todo("creates a pokemon record when it does not exist while saving");
