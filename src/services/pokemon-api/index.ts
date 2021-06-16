@@ -23,6 +23,10 @@ export const getPokemonFromName = async (
     }
   );
 
+  if (response.status !== 200) {
+    throw new Error("An error has occurred");
+  }
+
   return {
     status: response.status,
     body: JSON.parse((await response.text()) as any),

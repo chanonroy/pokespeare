@@ -1,7 +1,6 @@
-import { PokemonResolver } from "./PokemonResolver";
 import { mocked } from "ts-jest/utils";
 import { getPokemonFromName, parsePokemonInfo } from "../services/pokemon-api";
-import { GraphQLError } from "graphql";
+import { PokemonResolver } from "./PokemonResolver";
 
 jest.mock("../services/pokemon-api");
 
@@ -26,7 +25,7 @@ describe("PokemonResolver", () => {
   it("handles error with pokemon api", async () => {
     // mock api call
     mocked(getPokemonFromName).mockRejectedValueOnce(
-      new GraphQLError("An error has occurred")
+      new Error("An error has occurred")
     );
 
     const resolver = new PokemonResolver();

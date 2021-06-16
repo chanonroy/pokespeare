@@ -89,7 +89,7 @@ export class UserResolver {
   }
 
   @Mutation(() => LoginOutput, {
-    description: "Create new user and return userToken",
+    description: "Create new user and return an accessToken",
   })
   async signUp(@Arg("input") input: SignUpInput): Promise<LoginOutput> {
     const { emailAddress, password } = input;
