@@ -11,8 +11,6 @@ export const shakespeareTranslate = async (text: string) => {
     }
   );
 
-  console.log(response);
-
   if (response.status !== 200) {
     throw Error("An error occurred");
   }

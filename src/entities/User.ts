@@ -17,14 +17,14 @@ export class User extends BaseEntity {
   id!: string;
 
   @Field()
-  @Column("text", { unique: true })
+  @Column({ unique: true })
   emailAddress!: string;
 
   @Column()
   password!: string;
 
   @Field()
-  @OneToOne(() => List)
+  @OneToOne(() => List, (list) => list.userId)
   @JoinColumn()
   list!: List;
 }

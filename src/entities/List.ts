@@ -1,6 +1,7 @@
 import { Field, ObjectType } from "type-graphql";
 import {
   BaseEntity,
+  Column,
   Entity,
   JoinTable,
   ManyToMany,
@@ -15,8 +16,12 @@ export class List extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: string;
 
-  @Field(() => [Pokemon])
+  @Field()
+  @Column()
+  userId!: string;
+
+  @Field(() => [Pokemon], { nullable: true })
   @ManyToMany(() => Pokemon)
   @JoinTable()
-  pokemon!: Pokemon[];
+  pokemon: Pokemon[];
 }

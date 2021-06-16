@@ -8,11 +8,9 @@ export class Pokemon extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Field()
   @Column()
   name!: string;
 
-  @Field()
   @Column()
   description!: string;
 }
