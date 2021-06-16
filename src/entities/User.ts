@@ -12,7 +12,7 @@ import { List } from "./List";
 @ObjectType()
 @Entity()
 export class User extends BaseEntity {
-  @Field(() => ID)
+  @Field(() => String)
   @PrimaryGeneratedColumn()
   id!: string;
 

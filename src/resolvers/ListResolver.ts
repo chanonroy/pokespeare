@@ -3,11 +3,13 @@ import {
   Arg,
   Ctx,
   Field,
+  ID,
   InputType,
   Mutation,
   Resolver,
   UseMiddleware,
 } from "type-graphql";
+import { getRepository } from "typeorm";
 import { ServerContext } from "../@types";
 import { List } from "../entities/List";
 import { Pokemon } from "../entities/Pokemon";
@@ -27,7 +29,7 @@ class SavePokemonToListInput {
 
 @InputType()
 class RemovePokemonFromListInput {
-  @Field()
+  @Field(() => String)
   id!: string;
 }
 
@@ -43,26 +45,36 @@ export class ListResolver {
   ): Promise<List> {
     const userId = ctx.payload?.id;
 
-    const list = await List.findOne({ where: { userId } });
+    const list = await getRepository(List).findOne({
+      relations: ["pokemon"],
+      where: {
+        userId,
+      },
+    });
 
     if (!list) {
       throw new GraphQLError("An error has occurred");
     }
 
-    // get or create new pokemon
+    // saved pokemon already exists
     const pokemonId = input?.id;
+    if (list.pokemon.find((pokemon) => pokemon.id === input.id)) {
+      return list;
+    }
+
+    // get or create new pokemon
     const existingPokemon = await Pokemon.findOne({ where: { id: pokemonId } });
 
     if (!existingPokemon) {
-      // new pokemon record is required
-      const newPokemon = await Pokemon.create({ ...input });
+      // pokemon record does not exist
+      const newPokemon = await Pokemon.create({ ...input }).save();
       list.pokemon = [...list.pokemon, newPokemon];
     } else {
-      // pokemon already exists
+      // pokemon record already exists
       list.pokemon = [...list.pokemon, existingPokemon];
     }
 
-    // save list
+    // save list with new pokemon relation
     await list.save();
 
     return list;
@@ -77,7 +89,12 @@ export class ListResolver {
   ): Promise<List> {
     const userId = ctx.payload?.id;
 
-    const list = await List.findOne({ where: { userId } });
+    const list = await getRepository(List).findOne({
+      relations: ["pokemon"],
+      where: {
+        userId,
+      },
+    });
 
     if (!list) {
       throw new GraphQLError("An error has occurred");
@@ -86,7 +103,9 @@ export class ListResolver {
     const idToRemove = input.id;
 
     // remove pokemon from existing list
-    list.pokemon = list.pokemon.filter((pokemon) => pokemon.id !== idToRemove);
+    list.pokemon = list.pokemon.filter(
+      (pokemon) => pokemon.id.toString() !== idToRemove
+    );
 
     // save list
     await list.save();
