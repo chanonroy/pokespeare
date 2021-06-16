@@ -3,6 +3,7 @@ import { verify } from "jsonwebtoken";
 import { ServerContext, DecodedAccessToken } from "../@types";
 
 import { MiddlewareFn } from "type-graphql";
+import { JWT_SECRET } from "../env";
 
 export const isAuth: MiddlewareFn<ServerContext> = ({ context }, next) => {
   const accessToken = context.req.headers["authorization"];
@@ -16,7 +17,7 @@ export const isAuth: MiddlewareFn<ServerContext> = ({ context }, next) => {
     const token = accessToken.split(" ")[1];
 
     // verify that we signed the token
-    const payload = verify(token, "secret"); // TODO: add secret key
+    const payload = verify(token, JWT_SECRET);
 
     // add token to context
     context.payload = payload as DecodedAccessToken;
