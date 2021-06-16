@@ -1,18 +1,25 @@
+import React from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import Home from './screens/home'
 
 export default function App() {
-	console.log('hello')
 	return (
 		<Router>
 			<Switch>
 				<Route exact path='/'>
-					<div>Home</div>
+					<Home />
 				</Route>
-				<Route path='/about'>
-					<div>About</div>
+				<Route path='/login'>
+					<div>Login</div>
 				</Route>
-				<Route path='/dashboard'>
-					<div>Dashboard</div>
+				<Route path='/sign-up'>
+					<div>Sign up</div>
+				</Route>
+				<Route path='/saved'>
+					<div>My saved pokemon</div>
+				</Route>
+				<Route path='*'>
+					<div>404</div>
 				</Route>
 			</Switch>
 		</Router>
