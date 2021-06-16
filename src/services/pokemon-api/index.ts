@@ -39,7 +39,7 @@ export const parsePokemonInfo = (
   const { id, flavor_text_entries, names } = response.body;
 
   return {
-    id: id ?? "",
+    id: id?.toString() ?? "",
     description:
       flavor_text_entries
         ?.find((item: any) => item.language.name === "en")

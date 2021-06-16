@@ -1,7 +1,6 @@
 import { AuthenticationError } from "apollo-server-express";
 import { verify } from "jsonwebtoken";
 import { ServerContext, DecodedAccessToken } from "../@types";
-
 import { MiddlewareFn } from "type-graphql";
 import { JWT_SECRET } from "../env";
 
