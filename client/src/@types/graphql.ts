@@ -9,13 +9,13 @@
 
 export interface SearchPokemon_searchPokemon {
   __typename: "Pokemon";
-  id: string | null;
-  name: string | null;
-  description: string | null;
+  id: string;
+  name: string;
+  description: string;
 }
 
 export interface SearchPokemon {
-  searchPokemon: SearchPokemon_searchPokemon;
+  searchPokemon: SearchPokemon_searchPokemon[];
 }
 
 export interface SearchPokemonVariables {

@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { SearchPokemon, SearchPokemonVariables } from '../../@types/graphql'
 import Button from '../../components/button'
 import Container from '../../components/container'
+import PokemonCard from '../../components/pokemon-card'
 import TextInput from '../../components/text-input'
 
 const SEARCH_POKEMON_QUERY = gql`
@@ -33,7 +34,7 @@ export default function Home() {
 		}
 	}
 
-	const pokemonResult = data?.searchPokemon
+	const results = data?.searchPokemon
 
 	return (
 		<Container style={{ paddingTop: 40, paddingBottom: 40 }}>
@@ -44,7 +45,21 @@ export default function Home() {
 				onChange={(e) => setQuery(e.target.value)}
 			/>
 			<Button onClick={handleSearch}>Search</Button>
-			{pokemonResult && <div>hello</div>}
+
+			{/* Show pokemon card of result */}
+			{results && results.length > 0 && (
+				<>
+					{results.map(({ id, name, description }) => (
+						<PokemonCard
+							key={id}
+							id={id}
+							name={name}
+							description={description}
+							saved={false}
+						/>
+					))}
+				</>
+			)}
 		</Container>
 	)
 }
