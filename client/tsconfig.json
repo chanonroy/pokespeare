@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "jsx": "react",
+    "jsx": "react-jsx",
     "sourceMap": true,
     "allowJs": true,
     "moduleResolution": "node",
@@ -16,9 +16,14 @@
     "noEmit": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "target": "ES2018"
+    "target": "ES2018",
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "esnext",
+    "isolatedModules": true
   },
   "include": [
-    "src", "./src/@types/custom.d.ts"
+    "src",
+    "./src/@types/custom.d.ts"
   ]
 }

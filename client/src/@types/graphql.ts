@@ -4,21 +4,21 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: searchPokemon
+// GraphQL query operation: SearchPokemon
 // ====================================================
 
-export interface searchPokemon_searchPokemon {
+export interface SearchPokemon_searchPokemon {
   __typename: "Pokemon";
   id: string | null;
   name: string | null;
   description: string | null;
 }
 
-export interface searchPokemon {
-  searchPokemon: searchPokemon_searchPokemon;
+export interface SearchPokemon {
+  searchPokemon: SearchPokemon_searchPokemon;
 }
 
-export interface searchPokemonVariables {
+export interface SearchPokemonVariables {
   name: string;
 }
 
