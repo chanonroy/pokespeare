@@ -16,7 +16,6 @@ describe("PokemonResolver", () => {
         "It can freely recombine its own cellular structure to transform into other life-forms.",
       name: "Ditto",
     };
-
     // mock api call
     mocked(getPokemonFromName).mockReturnValueOnce({} as any);
     mocked(parsePokemonInfo).mockReturnValueOnce(resultMock);
@@ -24,7 +23,7 @@ describe("PokemonResolver", () => {
     const resolver = new PokemonResolver();
     const result = await resolver.searchPokemon("ditto");
 
-    expect(result).toEqual(resultMock);
+    expect(result).toEqual([resultMock]);
   });
   it("returns empty object when search results come back false", async () => {
     mocked(getPokemonFromName).mockRejectedValueOnce(
@@ -32,7 +31,7 @@ describe("PokemonResolver", () => {
     );
     const resolver = new PokemonResolver();
     const result = await resolver.searchPokemon("fakePokemon");
-    expect(result).toEqual({});
+    expect(result).toEqual([]);
   });
   it("handles error with pokemon api", async () => {
     // mock api call

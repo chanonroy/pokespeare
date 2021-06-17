@@ -9,7 +9,7 @@ import {
 
 @Resolver()
 export class PokemonResolver {
-  @Query(() => Pokemon)
+  @Query(() => [Pokemon])
   async searchPokemon(@Arg("name") name: string): Promise<any> {
     // consider keeping in redis cache
 
@@ -22,13 +22,15 @@ export class PokemonResolver {
       // TODO: get proper API key
       // const translatedDescription = await shakespeareTranslate(name);
 
-      return {
-        ...pokemon,
-        description: pokemon?.description || "",
-      };
+      return [
+        {
+          ...pokemon,
+          description: pokemon?.description || "",
+        },
+      ];
     } catch (err) {
       if (err instanceof PokemonNotFoundError) {
-        return {};
+        return [];
       }
 
       throw new GraphQLError("An error has occurred");
