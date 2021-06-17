@@ -4,14 +4,14 @@ import styled from 'styled-components'
 const StyledInput = styled.input`
 	border-radius: 4px;
 	border: 1px solid #dcdfe6;
-	height: 35px;
-	line-height: 40px;
-	padding: 0 15px;
+	line-height: 20px;
+	height: 25px;
+	padding: 10px 15px;
 	outline: none;
 	user-select: none;
 
 	&:hover {
-		border: 1px solid darkgrey;
+		border: 1px solid lightgrey;
 	}
 
 	&:focus {

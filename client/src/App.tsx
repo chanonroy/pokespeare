@@ -1,27 +1,12 @@
+import { ApolloProvider } from '@apollo/client'
 import React from 'react'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import Home from './screens/home'
+import apolloClient from './apolloClient'
+import Router from './Router'
 
 export default function App() {
 	return (
-		<Router>
-			<Switch>
-				<Route exact path='/'>
-					<Home />
-				</Route>
-				<Route path='/login'>
-					<div>Login</div>
-				</Route>
-				<Route path='/sign-up'>
-					<div>Sign up</div>
-				</Route>
-				<Route path='/saved'>
-					<div>My saved pokemon</div>
-				</Route>
-				<Route path='*'>
-					<div>404</div>
-				</Route>
-			</Switch>
-		</Router>
+		<ApolloProvider client={apolloClient}>
+			<Router />
+		</ApolloProvider>
 	)
 }
