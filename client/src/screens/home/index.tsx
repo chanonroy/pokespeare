@@ -18,7 +18,7 @@ const SEARCH_POKEMON_QUERY = gql`
 
 export default function Home() {
 	const [query, setQuery] = useState<string>('')
-	const [searchPokemon, { data, loading }] = useLazyQuery<
+	const [searchPokemon, { data: searchData, loading }] = useLazyQuery<
 		SearchPokemon,
 		SearchPokemonVariables
 	>(SEARCH_POKEMON_QUERY)
@@ -34,7 +34,7 @@ export default function Home() {
 		}
 	}
 
-	const results = data?.searchPokemon
+	const results = searchData?.searchPokemon
 
 	return (
 		<Container style={{ paddingTop: 40, paddingBottom: 40 }}>

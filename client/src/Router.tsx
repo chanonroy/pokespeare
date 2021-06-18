@@ -1,6 +1,7 @@
 import React from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import Home from './screens/home'
+import Saved from './screens/saved'
 
 export default function Router() {
 	return (
@@ -16,7 +17,7 @@ export default function Router() {
 					<div>Sign up</div>
 				</Route>
 				<Route path='/saved'>
-					<div>My saved pokemon</div>
+					<Saved />
 				</Route>
 				<Route path='*'>
 					<div>404</div>
