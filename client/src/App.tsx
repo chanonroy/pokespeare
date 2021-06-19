@@ -4,9 +4,9 @@ import apolloClient from './apolloClient'
 import Router from './Router'
 
 export default function App() {
-	return (
-		<ApolloProvider client={apolloClient}>
-			<Router />
-		</ApolloProvider>
-	)
+  return (
+    <ApolloProvider client={apolloClient}>
+      <Router />
+    </ApolloProvider>
+  )
 }
