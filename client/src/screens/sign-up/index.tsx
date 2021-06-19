@@ -1,11 +1,15 @@
 import { gql, useMutation } from '@apollo/client'
 import { useContext } from 'react'
 import { useHistory } from 'react-router-dom'
-import { RoutePath } from '../../@types'
+import { Colors, RoutePath } from '../../@types'
 import { SignUpMutation, SignUpMutationVariables } from '../../@types/graphql'
+import ActivityIcon from '../../components/activity-icon'
 import Button from '../../components/button'
+import Card from '../../components/card'
 import Container from '../../components/container'
+import HeroImage from '../../components/hero-image'
 import TextInput from '../../components/text-input'
+import TextInputLabel from '../../components/text-input-label'
 import ValidationError from '../../components/validation-error'
 import useTextInputState from '../../hooks/use-text-input-state'
 import { AuthContext } from '../../providers/AuthProvider'
@@ -40,7 +44,7 @@ export default function SignUp() {
     ],
   })
 
-  const [signUpMutation, { loading }] = useMutation<
+  const [signUpMutation, { loading: signUpLoading }] = useMutation<
     SignUpMutation,
     SignUpMutationVariables
   >(SIGN_UP_MUTATION)
@@ -70,44 +74,103 @@ export default function SignUp() {
   }
 
   return (
-    <Container style={{ paddingTop: 40, paddingBottom: 40 }}>
-      <div>SignUp page</div>
-      <TextInput
-        value={emailAddressState.value}
-        onChange={(e) => emailAddressState.onChange(e.target.value)}
-        onBlur={emailAddressState.onBlur}
-        error={emailAddressState.showError}
-        placeholder='Email address'
-      />
-      {emailAddressState.showError && (
-        <ValidationError>{emailAddressState.errorMessage}</ValidationError>
-      )}
+    <Container style={{ paddingTop: 80, paddingBottom: 40 }}>
+      <HeroImage />
+      <Card style={{ marginBottom: 40 }}>
+        {/* Information Text */}
+        <div style={{ marginBottom: 40, textAlign: 'center' }}>
+          <div
+            style={{
+              color: Colors.primary,
+              fontWeight: 'bold',
+              fontSize: 35,
+              marginBottom: 15,
+            }}
+          >
+            Join the party
+          </div>
+          <div style={{ fontSize: 14, color: 'darkgrey' }}>
+            To sign up, or not to sign up: that is the question
+          </div>
+        </div>
 
-      <TextInput
-        type='password'
-        value={passwordState.value}
-        onChange={(e) => passwordState.onChange(e.target.value)}
-        onBlur={passwordState.onBlur}
-        error={passwordState.showError}
-        placeholder='Password'
-      />
-      {passwordState.showError && (
-        <ValidationError>{passwordState.errorMessage}</ValidationError>
-      )}
+        <div style={{ marginBottom: 20 }}>
+          <TextInputLabel>Email address</TextInputLabel>
+          <TextInput
+            value={emailAddressState.value}
+            onChange={(e) => emailAddressState.onChange(e.target.value)}
+            error={emailAddressState.showError}
+            placeholder='Enter your email'
+            onKeyUp={({ key }) => {
+              if (key === 'Enter') {
+                handleSignUp()
+              }
+            }}
+          />
+          {emailAddressState.showError && (
+            <ValidationError>{emailAddressState.errorMessage}</ValidationError>
+          )}
+        </div>
 
-      <TextInput
-        type='password'
-        value={confirmPasswordState.value}
-        onChange={(e) => confirmPasswordState.onChange(e.target.value)}
-        onBlur={confirmPasswordState.onBlur}
-        error={confirmPasswordState.showError}
-        placeholder='Confirm Password'
-      />
-      {confirmPasswordState.showError && (
-        <ValidationError>{confirmPasswordState.errorMessage}</ValidationError>
-      )}
+        <div style={{ marginBottom: 20 }}>
+          <TextInputLabel>Password</TextInputLabel>
+          <TextInput
+            type='password'
+            value={passwordState.value}
+            onChange={(e) => passwordState.onChange(e.target.value)}
+            error={passwordState.showError}
+            placeholder='Enter a good password'
+            onKeyUp={({ key }) => {
+              if (key === 'Enter') {
+                handleSignUp()
+              }
+            }}
+          />
+          {passwordState.showError && (
+            <ValidationError>{passwordState.errorMessage}</ValidationError>
+          )}
+        </div>
 
-      <Button onClick={handleSignUp}>Sign Up</Button>
+        <div style={{ marginBottom: 40 }}>
+          <TextInputLabel>Confirm Password</TextInputLabel>
+          <TextInput
+            type='password'
+            value={confirmPasswordState.value}
+            onChange={(e) => confirmPasswordState.onChange(e.target.value)}
+            error={confirmPasswordState.showError}
+            placeholder='Confirm your password'
+            onKeyUp={({ key }) => {
+              if (key === 'Enter') {
+                handleSignUp()
+              }
+            }}
+          />
+          {confirmPasswordState.showError && (
+            <ValidationError>
+              {confirmPasswordState.errorMessage}
+            </ValidationError>
+          )}
+        </div>
+
+        <Button onClick={handleSignUp} style={{ width: '100%' }}>
+          {signUpLoading && <ActivityIcon style={{ position: 'absolute' }} />}
+          Sign Up
+        </Button>
+      </Card>
+
+      <div style={{ textAlign: 'center', color: 'darkgrey' }}>
+        Et tu, existing user?{' '}
+        <a
+          href={RoutePath.Login}
+          style={{
+            color: Colors.primary,
+            fontWeight: 'bold',
+            textDecoration: 'none',
+          }}
+        >
+          Login
+        </a>
+      </div>
     </Container>
   )
 }
