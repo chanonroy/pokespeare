@@ -1,5 +1,9 @@
 import { createContext, ReactElement, useState } from 'react'
-import { clearAccessToken, getAccessToken, saveAccessToken } from '../token'
+import {
+  clearAccessToken,
+  getAccessToken,
+  saveAccessToken,
+} from '../utils/token'
 
 interface AuthContextType {
   loggedIn: boolean

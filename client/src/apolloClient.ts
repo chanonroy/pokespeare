@@ -1,6 +1,6 @@
 import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
-import { getAccessToken } from './token'
+import { getAccessToken } from './utils/token'
 
 const uri = process.env.API_URL || 'http://localhost:4000'
 

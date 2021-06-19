@@ -9,7 +9,7 @@ import TextInput from '../../components/text-input'
 import ValidationError from '../../components/validation-error'
 import useTextInputState from '../../hooks/use-text-input-state'
 import { AuthContext } from '../../providers/AuthProvider'
-import { notEmpty, validEmail } from '../../validations'
+import { notEmpty, validEmail } from '../../utils/validations'
 
 const LOGIN_MUTATION = gql`
   mutation LoginMutation($emailAddress: String!, $password: String!) {
