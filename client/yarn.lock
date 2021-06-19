@@ -1811,6 +1811,22 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
+"@styled-icons/evil@^10.34.0":
+  version "10.34.0"
+  resolved "https://registry.yarnpkg.com/@styled-icons/evil/-/evil-10.34.0.tgz#3b682dcec4dfdb1b58f4fd2458895adc03585f5b"
+  integrity sha512-rU5MrgMow9I0Vkqo6V5WkTcj0o1toDzn8kQSQywTL1N7JuyATKZgN3kgkzNUgHd5LorcsGMetPsvDmgS31XAPw==
+  dependencies:
+    "@babel/runtime" "^7.14.0"
+    "@styled-icons/styled-icon" "^10.6.3"
+
+"@styled-icons/fluentui-system-regular@^10.34.0":
+  version "10.34.0"
+  resolved "https://registry.yarnpkg.com/@styled-icons/fluentui-system-regular/-/fluentui-system-regular-10.34.0.tgz#ab47b16d5572aff7873c5613eccf55ec06e2b88d"
+  integrity sha512-JhJClEzhzYNcxMHkg7r76c2pUIxxSwkJh+BCbJK0go0f0LhzZjIruffNIBVcelS4PZd4DSNtxpJNcEahVAWo8Q==
+  dependencies:
+    "@babel/runtime" "^7.14.0"
+    "@styled-icons/styled-icon" "^10.6.3"
+
 "@styled-icons/octicons@^10.34.0":
   version "10.34.0"
   resolved "https://registry.yarnpkg.com/@styled-icons/octicons/-/octicons-10.34.0.tgz#6d532486d09b418f9e8113cd2bcf1ac5872ab9ab"

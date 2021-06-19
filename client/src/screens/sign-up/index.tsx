@@ -1,11 +1,32 @@
+import { gql, useMutation } from '@apollo/client'
+import { useContext } from 'react'
+import { useHistory } from 'react-router-dom'
+import { RoutePath } from '../../@types'
+import { SignUpMutation, SignUpMutationVariables } from '../../@types/graphql'
 import Button from '../../components/button'
 import Container from '../../components/container'
 import TextInput from '../../components/text-input'
 import ValidationError from '../../components/validation-error'
 import useTextInputState from '../../hooks/use-text-input-state'
-import { notEmpty, validEmail } from '../../validations'
+import { AuthContext } from '../../providers/AuthProvider'
+import { isMatch, notEmpty, validEmail } from '../../utils/validations'
+
+const SIGN_UP_MUTATION = gql`
+  mutation SignUpMutation($emailAddress: String!, $password: String!) {
+    signUp(input: { emailAddress: $emailAddress, password: $password }) {
+      user {
+        id
+        emailAddress
+      }
+      accessToken
+    }
+  }
+`
 
 export default function SignUp() {
+  const history = useHistory()
+  const { login } = useContext(AuthContext)
+
   const emailAddressState = useTextInputState({
     validations: [notEmpty('Email is required'), validEmail('Invalid email')],
   })
@@ -13,10 +34,18 @@ export default function SignUp() {
     validations: [notEmpty('Password is required')],
   })
   const confirmPasswordState = useTextInputState({
-    validations: [notEmpty('Password is required')],
+    validations: [
+      notEmpty('Password is required'),
+      isMatch('Passwords do not match', passwordState.value),
+    ],
   })
 
-  const handleSignUp = () => {
+  const [signUpMutation, { loading }] = useMutation<
+    SignUpMutation,
+    SignUpMutationVariables
+  >(SIGN_UP_MUTATION)
+
+  const handleSignUp = async () => {
     emailAddressState.onBlur()
     passwordState.onBlur()
     confirmPasswordState.onBlur()
@@ -25,7 +54,19 @@ export default function SignUp() {
       return
     }
 
-    // TODO: perform action
+    try {
+      const { data } = await signUpMutation({
+        variables: {
+          emailAddress: emailAddressState.cleanValue,
+          password: passwordState.cleanValue,
+        },
+      })
+      const token = data?.signUp.accessToken || ''
+      login(token)
+      history.push(RoutePath.Home)
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   return (

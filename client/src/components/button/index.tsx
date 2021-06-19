@@ -1,10 +1,11 @@
 import styled from 'styled-components'
+import { Colors } from '../../@types'
 
 const Button = styled.button`
   display: block;
   cursor: pointer;
-  border: 1px solid #409eff;
-  background-color: #409eff;
+  border: 1px solid ${Colors.primary};
+  background-color: ${Colors.primary};
   box-shadow: none;
   color: white;
   border-radius: 5px;
@@ -13,17 +14,17 @@ const Button = styled.button`
   outline: none;
 
   &:hover {
-    background-color: #66b1ff;
-    border-color: #66b1ff;
+    background-color: ${Colors.primaryAccent};
+    border-color: ${Colors.primaryAccent};
   }
 
   &:active {
-    background-color: #409eff;
-    background-color: #409eff;
+    background-color: ${Colors.primary};
+    background-color: ${Colors.primary};
   }
 
   &:focus {
-    border-color: #66b1ff;
+    border-color: ${Colors.primaryAccent};
   }
 `
 

@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "@apollo/client": "^3.3.20",
+    "@styled-icons/evil": "^10.34.0",
+    "@styled-icons/fluentui-system-regular": "^10.34.0",
     "@styled-icons/octicons": "^10.34.0",
     "@types/jest": "^26.0.15",
     "@types/node": "^12.0.0",
@@ -46,7 +48,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "jest",
     "eject": "react-scripts eject",
     "lint": "tsc --noEmit && eslint . --ext .jsx,.tsx",
     "generate:types": "apollo client:codegen src/@types/graphql.ts --outputFlat --target=typescript --config apollo.config.js"
