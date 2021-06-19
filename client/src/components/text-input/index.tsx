@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { Colors } from '../../@types'
 
 const StyledInput = styled.input<{ error?: boolean }>`
+	display: block;
 	border-radius: 4px;
 	border: 1px solid;
 	line-height: 20px;

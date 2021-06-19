@@ -7,20 +7,22 @@ interface HookResult {
 	showError: boolean
 	errorMessage: string
 	onBlur: () => void
+	onChange: (value: string) => void
 }
 
 export default function useTextInputState({
-	value: valueFromProps,
+	value: valueFromProps = '',
 	trimValue = true,
 	validations = [],
 }: {
-	value: string
+	value?: string
 	trimValue?: boolean
 	validations?: ((value: string) => string | null)[]
 }): HookResult {
+	const [changedValue, setChangedValue] = useState<string | null>(null)
 	const [blurred, setBlurred] = useState(false)
 
-	const value = valueFromProps || ''
+	const value = changedValue ?? valueFromProps
 	const cleanValue = trimValue ? value.trim() : value
 	const errorMessage = validations.reduce(
 		(prev, validation) => prev || validation(cleanValue) || '',
@@ -34,5 +36,6 @@ export default function useTextInputState({
 		showError: blurred && !!errorMessage,
 		errorMessage,
 		onBlur: () => setBlurred(true),
+		onChange: (value: string) => setChangedValue(value),
 	}
 }

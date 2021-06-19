@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-const StyledButton = styled.button`
+const Button = styled.button`
 	display: block;
 	cursor: pointer;
 	border: 1px solid #409eff;
@@ -27,4 +27,4 @@ const StyledButton = styled.button`
 	}
 `
 
-export default StyledButton
+export default Button
