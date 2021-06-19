@@ -61,6 +61,36 @@ export interface LoginMutationVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: GetUserQuery
+// ====================================================
+
+export interface GetUserQuery_me_pokemon {
+  __typename: "Pokemon";
+  id: string;
+  name: string;
+  description: string;
+}
+
+export interface GetUserQuery_me {
+  __typename: "User";
+  id: string;
+  emailAddress: string;
+  pokemon: GetUserQuery_me_pokemon[] | null;
+}
+
+export interface GetUserQuery {
+  /**
+   * Get the current user
+   */
+  me: GetUserQuery_me;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: SignUpMutation
 // ====================================================
 

@@ -1,6 +1,10 @@
-import { gql, useLazyQuery } from '@apollo/client'
+import { gql, useLazyQuery, useQuery } from '@apollo/client'
 import React, { useState } from 'react'
-import { SearchPokemon, SearchPokemonVariables } from '../../@types/graphql'
+import {
+  GetUserQuery,
+  SearchPokemon,
+  SearchPokemonVariables,
+} from '../../@types/graphql'
 import Button from '../../components/button'
 import Container from '../../components/container'
 import PokemonCard from '../../components/pokemon-card'
@@ -16,12 +20,28 @@ const SEARCH_POKEMON_QUERY = gql`
   }
 `
 
+const GET_USER_QUERY = gql`
+  query GetUserQuery {
+    me {
+      id
+      emailAddress
+      pokemon {
+        id
+        name
+        description
+      }
+    }
+  }
+`
+
 export default function Home() {
-  const [query, setQuery] = useState<string>('')
+  const { data: userData } = useQuery<GetUserQuery>(GET_USER_QUERY)
   const [searchPokemon, { data: searchData, loading }] = useLazyQuery<
     SearchPokemon,
     SearchPokemonVariables
   >(SEARCH_POKEMON_QUERY)
+
+  const [query, setQuery] = useState<string>('')
 
   const handleSearch = async () => {
     if (!query) {
@@ -35,6 +55,7 @@ export default function Home() {
   }
 
   const results = searchData?.searchPokemon
+  const savedPokemon = userData?.me.pokemon
 
   return (
     <Container style={{ paddingTop: 40, paddingBottom: 40 }}>
@@ -47,6 +68,7 @@ export default function Home() {
       <Button onClick={handleSearch}>Search</Button>
 
       {/* Show pokemon card of result */}
+      <div>Search Results</div>
       {results && results.length > 0 && (
         <>
           {results.map(({ id, name, description }) => (
@@ -56,6 +78,22 @@ export default function Home() {
               name={name}
               description={description}
               saved={false}
+            />
+          ))}
+        </>
+      )}
+
+      {/* List of saved pokemon */}
+      <div>Saved Pokemon</div>
+      {savedPokemon && savedPokemon.length > 0 && (
+        <>
+          {savedPokemon?.map(({ id, name, description }) => (
+            <PokemonCard
+              key={id}
+              id={id}
+              name={name}
+              description={description}
+              saved={true}
             />
           ))}
         </>
