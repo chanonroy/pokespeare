@@ -1,5 +1,6 @@
 import { Heart, HeartFill } from '@styled-icons/octicons'
 import styled from 'styled-components'
+import { Colors } from '../../@types'
 
 const StyledCard = styled.div`
   display: flex;
@@ -7,6 +8,7 @@ const StyledCard = styled.div`
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0px 5px 15px rgba(59, 59, 59, 0.05);
+  margin-bottom: 20px;
 `
 
 export default function PokemonCard({
@@ -31,8 +33,10 @@ export default function PokemonCard({
           style={{ marginRight: 20 }}
         />
       </div>
-      <div style={{ paddingRight: 20 }}>
-        <div style={{ fontWeight: 'bold', marginBottom: 5 }}>
+      <div style={{ paddingRight: 20, width: '100%' }}>
+        <div
+          style={{ fontWeight: 'bold', color: Colors.dark, marginBottom: 5 }}
+        >
           <span style={{ marginRight: 5 }}>{name}</span>
           <span style={{ color: 'darkgrey' }}>#{id}</span>
         </div>

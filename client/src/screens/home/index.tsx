@@ -7,8 +7,10 @@ import {
 } from '../../@types/graphql'
 import Button from '../../components/button'
 import Container from '../../components/container'
+import HeroImage from '../../components/hero-image'
 import PokemonCard from '../../components/pokemon-card'
 import TextInput from '../../components/text-input'
+import TitleText from '../../components/title-text'
 
 const SEARCH_POKEMON_QUERY = gql`
   query SearchPokemon($name: String!) {
@@ -59,7 +61,9 @@ export default function Home() {
 
   return (
     <Container style={{ paddingTop: 40, paddingBottom: 40 }}>
-      {/* <img alt='shakespeare' src={shakespeareImg} height={50} width={50} /> */}
+      <HeroImage />
+
+      {/* Search Input */}
       <TextInput
         placeholder='Search for pokemon'
         value={query}
@@ -67,8 +71,8 @@ export default function Home() {
       />
       <Button onClick={handleSearch}>Search</Button>
 
-      {/* Show pokemon card of result */}
-      <div>Search Results</div>
+      {/* Pokemon card of result */}
+      <TitleText>Search Results</TitleText>
       {results && results.length > 0 && (
         <>
           {results.map(({ id, name, description }) => (
@@ -77,14 +81,14 @@ export default function Home() {
               id={id}
               name={name}
               description={description}
-              saved={false}
+              saved={!!savedPokemon?.find((pokemon) => pokemon.id === id)}
             />
           ))}
         </>
       )}
 
       {/* List of saved pokemon */}
-      <div>Saved Pokemon</div>
+      <TitleText>My Saved Pokemon</TitleText>
       {savedPokemon && savedPokemon.length > 0 && (
         <>
           {savedPokemon?.map(({ id, name, description }) => (
