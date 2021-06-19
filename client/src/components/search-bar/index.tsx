@@ -2,6 +2,7 @@ import { InputHTMLAttributes } from 'react'
 import styled from 'styled-components'
 import { Colors } from '../../@types'
 import { MagnifyingGlass } from '@styled-icons/entypo'
+import ActivityIcon from '../activity-icon'
 
 const SEARCH_BAR_HEIGHT = 40
 
@@ -14,7 +15,7 @@ const StyledSearchBar = styled.input<{ error?: boolean }>`
   height: ${SEARCH_BAR_HEIGHT}px;
   width: 100%;
   margin-bottom: 40px;
-  padding: 0 10px 0 45px;
+  padding: 0 10px 0 50px;
   outline: none;
   user-select: none;
   border-color: #dcdfe6;
@@ -35,19 +36,33 @@ const StyledSearchBar = styled.input<{ error?: boolean }>`
 `
 
 export default function SearchBar({
+  loading,
   ...props
-}: { error?: boolean } & InputHTMLAttributes<HTMLInputElement>) {
+}: {
+  loading?: boolean
+} & InputHTMLAttributes<HTMLInputElement>) {
   return (
     <div style={{ position: 'relative', width: '100%' }}>
-      <MagnifyingGlass
-        height={20}
-        style={{
-          position: 'absolute',
-          color: 'lightgrey',
-          top: 10,
-          left: 20,
-        }}
-      />
+      {loading ? (
+        <ActivityIcon
+          style={{
+            position: 'absolute',
+            color: 'lightgrey',
+            top: 10,
+            left: 20,
+          }}
+        />
+      ) : (
+        <MagnifyingGlass
+          style={{
+            position: 'absolute',
+            color: 'lightgrey',
+            top: 10,
+            left: 20,
+            height: 20,
+          }}
+        />
+      )}
       <StyledSearchBar {...props} />
     </div>
   )

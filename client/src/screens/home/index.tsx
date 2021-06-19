@@ -5,7 +5,6 @@ import {
   SearchPokemon,
   SearchPokemonVariables,
 } from '../../@types/graphql'
-import Button from '../../components/button'
 import Container from '../../components/container'
 import HeroImage from '../../components/hero-image'
 import PokemonCard from '../../components/pokemon-card'
@@ -40,10 +39,8 @@ const GET_USER_QUERY = gql`
 
 export default function Home() {
   const { data: userData } = useQuery<GetUserQuery>(GET_USER_QUERY)
-  const [searchPokemon, { data: searchData, loading }] = useLazyQuery<
-    SearchPokemon,
-    SearchPokemonVariables
-  >(SEARCH_POKEMON_QUERY)
+  const [searchPokemon, { data: searchData, loading: searchLoading }] =
+    useLazyQuery<SearchPokemon, SearchPokemonVariables>(SEARCH_POKEMON_QUERY)
 
   const [query, setQuery] = useState<string>('')
 
@@ -55,7 +52,7 @@ export default function Home() {
       return
     }
     try {
-      await searchPokemon({ variables: { name: query } })
+      await searchPokemon({ variables: { name: query.toLowerCase() } })
     } catch (e) {
       // handle error
     }
@@ -91,37 +88,44 @@ export default function Home() {
       </div>
 
       {/* Search Input */}
-      {/* <TextInput
-        placeholder='Search for pokemon'
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-      />
-      <Button onClick={handleSearch}>Search</Button> */}
       <SearchBar
         placeholder='Enter pokemon name'
         onChange={(e) => setQuery(e.target.value)}
+        spellCheck='false'
+        loading={searchLoading || saveLoading || unsaveLoading}
+        onKeyUp={({ key }) => {
+          if (key === 'Enter') {
+            handleSearch()
+          }
+        }}
       />
-      <Button onClick={handleSearch}>Search</Button>
 
       {/* Search result */}
-      {results && results.length > 0 && (
-        <>
+      {results && (
+        <div style={{ marginBottom: 40 }}>
           <TitleText>Results</TitleText>
-          {results.map(({ id, name, description }) => {
-            const isSaved = !!savedPokemon?.find((pokemon) => pokemon.id === id)
-            return (
-              <PokemonCard
-                key={id}
-                id={id}
-                name={name}
-                description={description}
-                saved={isSaved}
-                onSave={() => handleSavePokemon(id, name, description)}
-                onUnsave={() => handleUnsavePokemon(id)}
-              />
-            )
-          })}
-        </>
+          {results.length > 0 ? (
+            <>
+              {results.map(({ id, name, description }) => {
+                return (
+                  <PokemonCard
+                    key={id}
+                    id={id}
+                    name={name}
+                    description={description}
+                    saved={!!savedPokemon?.find((pokemon) => pokemon.id === id)}
+                    onSave={() => handleSavePokemon(id, name, description)}
+                    onUnsave={() => handleUnsavePokemon(id)}
+                  />
+                )
+              })}
+            </>
+          ) : (
+            <div style={{ textAlign: 'center', color: 'lightgrey' }}>
+              No Pokemon Found
+            </div>
+          )}
+        </div>
       )}
 
       {/* List of saved pokemon */}

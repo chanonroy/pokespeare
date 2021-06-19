@@ -39,7 +39,7 @@ export default function PokemonCard({
       </div>
       <div style={{ paddingRight: 20, width: '100%' }}>
         <div
-          style={{ fontWeight: 'bold', color: Colors.dark, marginBottom: 5 }}
+          style={{ fontWeight: 'bold', color: Colors.dark, marginBottom: 10 }}
         >
           <span style={{ marginRight: 5 }}>{name}</span>
           <span style={{ color: 'darkgrey' }}>#{id}</span>
