@@ -77,6 +77,7 @@ export default function SignUp() {
     <Container style={{ paddingTop: 80, paddingBottom: 40 }}>
       <HeroImage />
       <Card style={{ marginBottom: 40 }}>
+        {/* Information Text */}
         <div style={{ marginBottom: 40, textAlign: 'center' }}>
           <div
             style={{

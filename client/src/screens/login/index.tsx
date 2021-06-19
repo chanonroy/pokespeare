@@ -78,6 +78,7 @@ export default function Login() {
     >
       <HeroImage />
       <Card style={{ marginBottom: 40 }}>
+        {/* Information Text */}
         <div style={{ marginBottom: 40, textAlign: 'center' }}>
           <div
             style={{
