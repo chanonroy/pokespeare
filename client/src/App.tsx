@@ -1,7 +1,7 @@
 import { ApolloProvider } from '@apollo/client'
 import React from 'react'
 import apolloClient from './apolloClient'
-import Router from './Router'
+import Router from './router'
 
 export default function App() {
   return (

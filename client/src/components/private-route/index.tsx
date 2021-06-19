@@ -6,18 +6,9 @@ import { getAccessToken } from '../../token'
 function PrivateRoute({ component: Component, ...props }: any) {
   const isAuthenticated = !!getAccessToken()
 
-  return (
-    <Route
-      {...props}
-      render={(props) =>
-        isAuthenticated ? (
-          <Component {...props} />
-        ) : (
-          <Redirect to={RoutePath.Login} />
-        )
-      }
-    />
-  )
+  if (!isAuthenticated) return <Redirect to={RoutePath.Login} />
+
+  return <Route {...props} render={(props) => <Component {...props} />} />
 }
 
 export default PrivateRoute
