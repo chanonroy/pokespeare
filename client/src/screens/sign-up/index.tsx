@@ -3,6 +3,7 @@ import { useContext } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Colors, RoutePath } from '../../@types'
 import { SignUpMutation, SignUpMutationVariables } from '../../@types/graphql'
+import ActivityIcon from '../../components/activity-icon'
 import Button from '../../components/button'
 import Card from '../../components/card'
 import Container from '../../components/container'
@@ -43,7 +44,7 @@ export default function SignUp() {
     ],
   })
 
-  const [signUpMutation, { loading }] = useMutation<
+  const [signUpMutation, { loading: signUpLoading }] = useMutation<
     SignUpMutation,
     SignUpMutationVariables
   >(SIGN_UP_MUTATION)
@@ -151,6 +152,7 @@ export default function SignUp() {
         </div>
 
         <Button onClick={handleSignUp} style={{ width: '100%' }}>
+          {signUpLoading && <ActivityIcon style={{ position: 'absolute' }} />}
           Sign Up
         </Button>
       </Card>

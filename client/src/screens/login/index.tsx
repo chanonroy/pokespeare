@@ -3,6 +3,7 @@ import { useContext } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Colors, RoutePath } from '../../@types'
 import { LoginMutation, LoginMutationVariables } from '../../@types/graphql'
+import ActivityIcon from '../../components/activity-icon'
 import Button from '../../components/button'
 import Card from '../../components/card'
 import Container from '../../components/container'
@@ -40,7 +41,7 @@ export default function Login() {
     validations: [notEmpty('Password is required')],
   })
 
-  const [loginMutation, { loading }] = useMutation<
+  const [loginMutation, { loading: loginLoading }] = useMutation<
     LoginMutation,
     LoginMutationVariables
   >(LOGIN_MUTATION)
@@ -131,6 +132,7 @@ export default function Login() {
         </div>
 
         <Button onClick={handleLogin} style={{ width: '100%' }}>
+          {loginLoading && <ActivityIcon style={{ position: 'absolute' }} />}
           Login
         </Button>
       </Card>

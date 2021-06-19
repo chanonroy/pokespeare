@@ -3,6 +3,7 @@ import { Colors } from '../../@types'
 
 const Button = styled.button`
   display: block;
+  position: 'relative';
   cursor: pointer;
   border: 1px solid ${Colors.primary};
   background-color: ${Colors.primary};
