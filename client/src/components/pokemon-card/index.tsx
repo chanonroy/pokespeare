@@ -18,13 +18,15 @@ export default function PokemonCard({
   name,
   description,
   saved,
-  onToggleSave,
+  onSave,
+  onUnsave,
 }: {
   id: string
   name: string
   description: string
   saved: boolean
-  onToggleSave?: () => void
+  onSave?: () => void
+  onUnsave?: () => void
 }) {
   return (
     <StyledCard>
@@ -50,14 +52,18 @@ export default function PokemonCard({
             height={16}
             color={'#e74c3c'}
             style={{ cursor: 'pointer' }}
-            onClick={onToggleSave}
+            onClick={() => {
+              if (onUnsave) onUnsave()
+            }}
           />
         ) : (
           <Heart
             height={16}
             color='darkgrey'
             style={{ cursor: 'pointer' }}
-            onClick={onToggleSave}
+            onClick={() => {
+              if (onSave) onSave()
+            }}
           />
         )}
       </div>

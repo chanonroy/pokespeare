@@ -199,12 +199,12 @@ export class UserResolver {
     @Ctx() ctx: ServerContext,
     @Arg("input") input: UnsavePokemonInput
   ): Promise<User> {
-    const userId = ctx.payload?.id;
+    const id = ctx.payload?.id;
 
     const user = await getRepository(User).findOne({
       relations: ["pokemon"],
       where: {
-        userId,
+        id,
       },
     });
 

@@ -10,8 +10,9 @@ import Container from '../../components/container'
 import HeroImage from '../../components/hero-image'
 import PokemonCard from '../../components/pokemon-card'
 import SearchBar from '../../components/search-bar'
-import TextInput from '../../components/text-input'
 import TitleText from '../../components/title-text'
+import useSaveMutation from '../../hooks/use-save-mutation'
+import useUnsaveMutation from '../../hooks/use-unsave-mutation'
 
 const SEARCH_POKEMON_QUERY = gql`
   query SearchPokemon($name: String!) {
@@ -46,6 +47,9 @@ export default function Home() {
 
   const [query, setQuery] = useState<string>('')
 
+  const [savePokemon, { loading: saveLoading }] = useSaveMutation()
+  const [unsavePokemon, { loading: unsaveLoading }] = useUnsaveMutation()
+
   const handleSearch = async () => {
     if (!query) {
       return
@@ -53,6 +57,26 @@ export default function Home() {
     try {
       await searchPokemon({ variables: { name: query } })
     } catch (e) {
+      // handle error
+    }
+  }
+
+  const handleSavePokemon = async (
+    id: string,
+    name: string,
+    description: string
+  ) => {
+    try {
+      await savePokemon({ variables: { id, name, description } })
+    } catch (err) {
+      // handle error
+    }
+  }
+
+  const handleUnsavePokemon = async (id: string) => {
+    try {
+      await unsavePokemon({ variables: { id } })
+    } catch (err) {
       // handle error
     }
   }
@@ -73,27 +97,34 @@ export default function Home() {
         onChange={(e) => setQuery(e.target.value)}
       />
       <Button onClick={handleSearch}>Search</Button> */}
-      <SearchBar placeholder='Enter pokemon name' />
+      <SearchBar
+        placeholder='Enter pokemon name'
+        onChange={(e) => setQuery(e.target.value)}
+      />
+      <Button onClick={handleSearch}>Search</Button>
 
-      {/* Pokemon card of result */}
-
+      {/* Search result */}
       {results && results.length > 0 && (
         <>
           <TitleText>Results</TitleText>
-          {results.map(({ id, name, description }) => (
-            <PokemonCard
-              key={id}
-              id={id}
-              name={name}
-              description={description}
-              saved={!!savedPokemon?.find((pokemon) => pokemon.id === id)}
-            />
-          ))}
+          {results.map(({ id, name, description }) => {
+            const isSaved = !!savedPokemon?.find((pokemon) => pokemon.id === id)
+            return (
+              <PokemonCard
+                key={id}
+                id={id}
+                name={name}
+                description={description}
+                saved={isSaved}
+                onSave={() => handleSavePokemon(id, name, description)}
+                onUnsave={() => handleUnsavePokemon(id)}
+              />
+            )
+          })}
         </>
       )}
 
       {/* List of saved pokemon */}
-
       {savedPokemon && savedPokemon.length > 0 && (
         <>
           <TitleText>Saved</TitleText>
@@ -104,6 +135,7 @@ export default function Home() {
               name={name}
               description={description}
               saved={true}
+              onUnsave={() => handleUnsavePokemon(id)}
             />
           ))}
         </>
