@@ -5,10 +5,12 @@ import { Colors } from '../../@types'
 const StyledCard = styled.div`
   display: flex;
   background-color: white;
+  width: 100%;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0px 5px 15px rgba(59, 59, 59, 0.05);
   margin-bottom: 20px;
+  box-sizing: border-box;
 `
 
 export default function PokemonCard({

@@ -9,6 +9,7 @@ import Button from '../../components/button'
 import Container from '../../components/container'
 import HeroImage from '../../components/hero-image'
 import PokemonCard from '../../components/pokemon-card'
+import SearchBar from '../../components/search-bar'
 import TextInput from '../../components/text-input'
 import TitleText from '../../components/title-text'
 
@@ -61,20 +62,24 @@ export default function Home() {
 
   return (
     <Container style={{ paddingTop: 40, paddingBottom: 40 }}>
-      <HeroImage />
+      <div style={{ marginBottom: 40 }}>
+        <HeroImage />
+      </div>
 
       {/* Search Input */}
-      <TextInput
+      {/* <TextInput
         placeholder='Search for pokemon'
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
-      <Button onClick={handleSearch}>Search</Button>
+      <Button onClick={handleSearch}>Search</Button> */}
+      <SearchBar placeholder='Enter pokemon name' />
 
       {/* Pokemon card of result */}
-      <TitleText>Search Results</TitleText>
+
       {results && results.length > 0 && (
         <>
+          <TitleText>Results</TitleText>
           {results.map(({ id, name, description }) => (
             <PokemonCard
               key={id}
@@ -88,9 +93,10 @@ export default function Home() {
       )}
 
       {/* List of saved pokemon */}
-      <TitleText>My Saved Pokemon</TitleText>
+
       {savedPokemon && savedPokemon.length > 0 && (
         <>
+          <TitleText>Saved</TitleText>
           {savedPokemon?.map(({ id, name, description }) => (
             <PokemonCard
               key={id}
