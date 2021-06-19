@@ -8,15 +8,15 @@ const authLink = setContext(async (_, { headers }) => {
   const token = getAccessToken()
 
   return {
-    ...headers,
-    Authorization: `Bearer ${token}`,
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : '',
+    },
   }
 })
 
 const apolloClient = new ApolloClient({
-  link: authLink.concat(
-    createHttpLink({ uri: `${uri}/graphql`, credentials: 'include' })
-  ),
+  link: authLink.concat(createHttpLink({ uri: `${uri}/graphql` })),
   cache: new InMemoryCache(),
 })
 

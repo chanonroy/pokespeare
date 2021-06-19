@@ -1,10 +1,17 @@
-import { gql, useLazyQuery } from '@apollo/client'
+import { gql, useLazyQuery, useQuery } from '@apollo/client'
 import React, { useState } from 'react'
-import { SearchPokemon, SearchPokemonVariables } from '../../@types/graphql'
-import Button from '../../components/button'
+import {
+  GetUserQuery,
+  SearchPokemon,
+  SearchPokemonVariables,
+} from '../../@types/graphql'
 import Container from '../../components/container'
+import HeroImage from '../../components/hero-image'
 import PokemonCard from '../../components/pokemon-card'
-import TextInput from '../../components/text-input'
+import SearchBar from '../../components/search-bar'
+import TitleText from '../../components/title-text'
+import useSaveMutation from '../../hooks/use-save-mutation'
+import useUnsaveMutation from '../../hooks/use-unsave-mutation'
 
 const SEARCH_POKEMON_QUERY = gql`
   query SearchPokemon($name: String!) {
@@ -16,46 +23,123 @@ const SEARCH_POKEMON_QUERY = gql`
   }
 `
 
+const GET_USER_QUERY = gql`
+  query GetUserQuery {
+    me {
+      id
+      emailAddress
+      pokemon {
+        id
+        name
+        description
+      }
+    }
+  }
+`
+
 export default function Home() {
+  const { data: userData } = useQuery<GetUserQuery>(GET_USER_QUERY)
+  const [searchPokemon, { data: searchData, loading: searchLoading }] =
+    useLazyQuery<SearchPokemon, SearchPokemonVariables>(SEARCH_POKEMON_QUERY)
+
   const [query, setQuery] = useState<string>('')
-  const [searchPokemon, { data: searchData, loading }] = useLazyQuery<
-    SearchPokemon,
-    SearchPokemonVariables
-  >(SEARCH_POKEMON_QUERY)
+
+  const [savePokemon, { loading: saveLoading }] = useSaveMutation()
+  const [unsavePokemon, { loading: unsaveLoading }] = useUnsaveMutation()
 
   const handleSearch = async () => {
     if (!query) {
       return
     }
     try {
-      await searchPokemon({ variables: { name: query } })
+      await searchPokemon({ variables: { name: query.toLowerCase() } })
     } catch (e) {
       // handle error
     }
   }
 
+  const handleSavePokemon = async (
+    id: string,
+    name: string,
+    description: string
+  ) => {
+    try {
+      await savePokemon({ variables: { id, name, description } })
+    } catch (err) {
+      // handle error
+    }
+  }
+
+  const handleUnsavePokemon = async (id: string) => {
+    try {
+      await unsavePokemon({ variables: { id } })
+    } catch (err) {
+      // handle error
+    }
+  }
+
   const results = searchData?.searchPokemon
+  const savedPokemon = userData?.me.pokemon
 
   return (
     <Container style={{ paddingTop: 40, paddingBottom: 40 }}>
-      {/* <img alt='shakespeare' src={shakespeareImg} height={50} width={50} /> */}
-      <TextInput
-        placeholder='Search for pokemon'
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-      />
-      <Button onClick={handleSearch}>Search</Button>
+      <div style={{ marginBottom: 40 }}>
+        <HeroImage />
+      </div>
 
-      {/* Show pokemon card of result */}
-      {results && results.length > 0 && (
+      {/* Search Input */}
+      <SearchBar
+        placeholder='Enter pokemon name'
+        onChange={(e) => setQuery(e.target.value)}
+        spellCheck='false'
+        loading={searchLoading || saveLoading || unsaveLoading}
+        onKeyUp={({ key }) => {
+          if (key === 'Enter') {
+            handleSearch()
+          }
+        }}
+      />
+
+      {/* Search result */}
+      {results && (
+        <div style={{ marginBottom: 40 }}>
+          <TitleText>Results</TitleText>
+          {results.length > 0 ? (
+            <>
+              {results.map(({ id, name, description }) => {
+                return (
+                  <PokemonCard
+                    key={id}
+                    id={id}
+                    name={name}
+                    description={description}
+                    saved={!!savedPokemon?.find((pokemon) => pokemon.id === id)}
+                    onSave={() => handleSavePokemon(id, name, description)}
+                    onUnsave={() => handleUnsavePokemon(id)}
+                  />
+                )
+              })}
+            </>
+          ) : (
+            <div style={{ textAlign: 'center', color: 'lightgrey' }}>
+              No Pokemon Found
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* List of saved pokemon */}
+      {savedPokemon && savedPokemon.length > 0 && (
         <>
-          {results.map(({ id, name, description }) => (
+          <TitleText>Saved</TitleText>
+          {savedPokemon?.map(({ id, name, description }) => (
             <PokemonCard
               key={id}
               id={id}
               name={name}
               description={description}
-              saved={false}
+              saved={true}
+              onUnsave={() => handleUnsavePokemon(id)}
             />
           ))}
         </>

@@ -25,7 +25,6 @@ export default function Navigation() {
         <InnerNav>
           <div>Pokespeare</div>
           <div>
-            <NavLink href='/saved'>Saved</NavLink>
             {loggedIn ? (
               <NavLink onClick={logout}>Logout</NavLink>
             ) : (
