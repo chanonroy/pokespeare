@@ -88,7 +88,7 @@ export default function Login() {
           >
             Pokespeare
           </div>
-          <div style={{ fontSize: 14, color: 'lightgrey' }}>
+          <div style={{ fontSize: 14, color: 'darkgrey' }}>
             The Pokemon search engine with hint of Shakespeare
           </div>
         </div>

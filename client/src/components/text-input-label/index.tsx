@@ -1,8 +1,7 @@
 import styled from 'styled-components'
-import { Colors } from '../../@types'
 
 const TextInputLabel = styled.div`
-  color: ${Colors.dark};
+  color: darkgrey;
   font-size: 14px;
   margin-bottom: 10px;
 `
