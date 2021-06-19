@@ -1,11 +1,14 @@
 import { gql, useMutation } from '@apollo/client'
+import { useContext } from 'react'
+import { useHistory } from 'react-router-dom'
+import { RoutePath } from '../../@types'
 import { SignUpMutation, SignUpMutationVariables } from '../../@types/graphql'
 import Button from '../../components/button'
 import Container from '../../components/container'
 import TextInput from '../../components/text-input'
 import ValidationError from '../../components/validation-error'
 import useTextInputState from '../../hooks/use-text-input-state'
-import { saveAccessToken } from '../../token'
+import { AuthContext } from '../../providers/AuthProvider'
 import { isMatch, notEmpty, validEmail } from '../../validations'
 
 const SIGN_UP_MUTATION = gql`
@@ -21,6 +24,9 @@ const SIGN_UP_MUTATION = gql`
 `
 
 export default function SignUp() {
+  const history = useHistory()
+  const { login } = useContext(AuthContext)
+
   const emailAddressState = useTextInputState({
     validations: [notEmpty('Email is required'), validEmail('Invalid email')],
   })
@@ -56,7 +62,8 @@ export default function SignUp() {
         },
       })
       const token = data?.signUp.accessToken || ''
-      saveAccessToken(token)
+      login(token)
+      history.push(RoutePath.Home)
     } catch (err) {
       console.log(err)
     }
