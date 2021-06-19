@@ -1,6 +1,7 @@
 import React from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import Home from './screens/home'
+import Login from './screens/login'
 import Saved from './screens/saved'
 
 export default function Router() {
@@ -11,7 +12,7 @@ export default function Router() {
 					<Home />
 				</Route>
 				<Route path='/login'>
-					<div>Login</div>
+					<Login />
 				</Route>
 				<Route path='/sign-up'>
 					<div>Sign up</div>
