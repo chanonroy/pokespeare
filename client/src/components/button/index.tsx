@@ -8,6 +8,7 @@ const Button = styled.button`
   background-color: ${Colors.primary};
   box-shadow: none;
   color: white;
+  font-size: 16px;
   border-radius: 5px;
   padding: 12px 20px;
   transition: all 0.1s ease;
