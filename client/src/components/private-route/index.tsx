@@ -6,8 +6,6 @@ import { getAccessToken } from '../../token'
 function PrivateRoute({ component: Component, ...props }: any) {
   const isAuthenticated = !!getAccessToken()
 
-  console.log({ isAuthenticated })
-
   return (
     <Route
       {...props}
