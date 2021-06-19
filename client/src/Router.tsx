@@ -1,5 +1,7 @@
 import React from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { RoutePath } from './@types'
+import PrivateRoute from './components/private-route'
 import Home from './screens/home'
 import Login from './screens/login'
 import Saved from './screens/saved'
@@ -9,18 +11,18 @@ export default function Router() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route exact path='/'>
+        <Route exact path={RoutePath.Home}>
           <Home />
         </Route>
-        <Route path='/login'>
+        <Route path={RoutePath.Login}>
           <Login />
         </Route>
-        <Route path='/sign-up'>
+        <Route path={RoutePath.SignUp}>
           <SignUp />
         </Route>
-        <Route path='/saved'>
+        <PrivateRoute path={RoutePath.Saved}>
           <Saved />
-        </Route>
+        </PrivateRoute>
         <Route path='*'>
           <div>404</div>
         </Route>

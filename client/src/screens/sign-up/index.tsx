@@ -1,9 +1,24 @@
+import { gql, useMutation } from '@apollo/client'
+import { SignUpMutation, SignUpMutationVariables } from '../../@types/graphql'
 import Button from '../../components/button'
 import Container from '../../components/container'
 import TextInput from '../../components/text-input'
 import ValidationError from '../../components/validation-error'
 import useTextInputState from '../../hooks/use-text-input-state'
+import { saveAccessToken } from '../../token'
 import { isMatch, notEmpty, validEmail } from '../../validations'
+
+const SIGN_UP_MUTATION = gql`
+  mutation SignUpMutation($emailAddress: String!, $password: String!) {
+    signUp(input: { emailAddress: $emailAddress, password: $password }) {
+      user {
+        id
+        emailAddress
+      }
+      accessToken
+    }
+  }
+`
 
 export default function SignUp() {
   const emailAddressState = useTextInputState({
@@ -19,7 +34,12 @@ export default function SignUp() {
     ],
   })
 
-  const handleSignUp = () => {
+  const [signUpMutation, { loading }] = useMutation<
+    SignUpMutation,
+    SignUpMutationVariables
+  >(SIGN_UP_MUTATION)
+
+  const handleSignUp = async () => {
     emailAddressState.onBlur()
     passwordState.onBlur()
     confirmPasswordState.onBlur()
@@ -28,7 +48,18 @@ export default function SignUp() {
       return
     }
 
-    // TODO: perform action
+    try {
+      const { data } = await signUpMutation({
+        variables: {
+          emailAddress: emailAddressState.cleanValue,
+          password: passwordState.cleanValue,
+        },
+      })
+      const token = data?.signUp.accessToken || ''
+      saveAccessToken(token)
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   return (
