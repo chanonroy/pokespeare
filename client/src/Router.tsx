@@ -6,25 +6,25 @@ import Saved from './screens/saved'
 import SignUp from './screens/sign-up'
 
 export default function Router() {
-	return (
-		<BrowserRouter>
-			<Switch>
-				<Route exact path='/'>
-					<Home />
-				</Route>
-				<Route path='/login'>
-					<Login />
-				</Route>
-				<Route path='/sign-up'>
-					<SignUp />
-				</Route>
-				<Route path='/saved'>
-					<Saved />
-				</Route>
-				<Route path='*'>
-					<div>404</div>
-				</Route>
-			</Switch>
-		</BrowserRouter>
-	)
+  return (
+    <BrowserRouter>
+      <Switch>
+        <Route exact path='/'>
+          <Home />
+        </Route>
+        <Route path='/login'>
+          <Login />
+        </Route>
+        <Route path='/sign-up'>
+          <SignUp />
+        </Route>
+        <Route path='/saved'>
+          <Saved />
+        </Route>
+        <Route path='*'>
+          <div>404</div>
+        </Route>
+      </Switch>
+    </BrowserRouter>
+  )
 }
