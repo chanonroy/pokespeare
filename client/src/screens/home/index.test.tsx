@@ -1,3 +1,5 @@
+import React from 'react'
+
 describe('Home', () => {
   it.todo('handles a valid search result')
   it.todo('shows already saved pokemon')

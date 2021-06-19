@@ -1,3 +1,5 @@
+import React from 'react'
+
 describe('Login', () => {
   it.todo('logs in with successful credentials')
   it.todo('shows form validation errors')

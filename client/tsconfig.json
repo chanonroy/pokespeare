@@ -20,7 +20,7 @@
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "module": "esnext",
-    "isolatedModules": false
+    "isolatedModules": true
   },
   "include": [
     "src",
