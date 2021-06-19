@@ -21,6 +21,10 @@ const StyledInput = styled.input<{ error?: boolean }>`
 	&:focus {
 		border: 1px solid #409eff;
 	}
+
+	&::placeholder {
+		color: lightgrey;
+	}
 `
 
 export default function TextInput({
