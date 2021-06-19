@@ -3,7 +3,7 @@ import Container from '../../components/container'
 import TextInput from '../../components/text-input'
 import ValidationError from '../../components/validation-error'
 import useTextInputState from '../../hooks/use-text-input-state'
-import { notEmpty, validEmail } from '../../validations'
+import { isMatch, notEmpty, validEmail } from '../../validations'
 
 export default function SignUp() {
   const emailAddressState = useTextInputState({
@@ -13,7 +13,10 @@ export default function SignUp() {
     validations: [notEmpty('Password is required')],
   })
   const confirmPasswordState = useTextInputState({
-    validations: [notEmpty('Password is required')],
+    validations: [
+      notEmpty('Password is required'),
+      isMatch('Passwords do not match', passwordState.value),
+    ],
   })
 
   const handleSignUp = () => {
