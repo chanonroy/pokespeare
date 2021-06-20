@@ -12,3 +12,7 @@ export enum RoutePath {
   SignUp = '/sign-up',
   Saved = '/saved',
 }
+
+export enum GraphQLErrorCode {
+  InvalidCredentials = 'INVALID_CREDENTIALS',
+}
