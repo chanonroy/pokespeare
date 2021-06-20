@@ -6,6 +6,7 @@ import {
   SearchPokemonVariables,
 } from '../../@types/graphql'
 import Container from '../../components/container'
+import ErrorBanner from '../../components/error-banner'
 import HeroImage from '../../components/hero-image'
 import PokemonCard from '../../components/pokemon-card'
 import SearchBar from '../../components/search-bar'
@@ -41,6 +42,7 @@ export default function Home() {
   const { data: userData } = useQuery<GetUserQuery>(GET_USER_QUERY)
   const [searchPokemon, { data: searchData, loading: searchLoading }] =
     useLazyQuery<SearchPokemon, SearchPokemonVariables>(SEARCH_POKEMON_QUERY)
+  const [errorMessage, setErrorMessage] = useState('')
 
   const [query, setQuery] = useState<string>('')
 
@@ -54,7 +56,7 @@ export default function Home() {
     try {
       await searchPokemon({ variables: { name: query.toLowerCase() } })
     } catch (e) {
-      // handle error
+      setErrorMessage('An error has occurred. Please try again later.')
     }
   }
 
@@ -66,7 +68,7 @@ export default function Home() {
     try {
       await savePokemon({ variables: { id, name, description } })
     } catch (err) {
-      // handle error
+      setErrorMessage('An error has occurred. Please try again later.')
     }
   }
 
@@ -74,7 +76,7 @@ export default function Home() {
     try {
       await unsavePokemon({ variables: { id } })
     } catch (err) {
-      // handle error
+      setErrorMessage('An error has occurred. Please try again later.')
     }
   }
 
@@ -86,6 +88,13 @@ export default function Home() {
       <div style={{ marginBottom: 40 }}>
         <HeroImage />
       </div>
+
+      {/* Error Message */}
+      {errorMessage && (
+        <div style={{ marginBottom: 40 }}>
+          <ErrorBanner message='Hello' />
+        </div>
+      )}
 
       {/* Search Input */}
       <SearchBar
