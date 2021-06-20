@@ -1,18 +1,20 @@
 import { gql, useMutation } from '@apollo/client'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { Colors, RoutePath } from '../../@types'
+import { Colors, GraphQLErrorCode, RoutePath } from '../../@types'
 import { LoginMutation, LoginMutationVariables } from '../../@types/graphql'
 import ActivityIcon from '../../components/activity-icon'
 import Button from '../../components/button'
 import Card from '../../components/card'
 import Container from '../../components/container'
+import ErrorBanner from '../../components/error-banner'
 import HeroImage from '../../components/hero-image'
 import TextInput from '../../components/text-input'
 import TextInputLabel from '../../components/text-input-label'
 import ValidationError from '../../components/validation-error'
 import useTextInputState from '../../hooks/use-text-input-state'
 import { AuthContext } from '../../providers/AuthProvider'
+import { getErrorCode } from '../../utils/apolloUtils'
 import { notEmpty, validEmail } from '../../utils/validations'
 
 const LOGIN_MUTATION = gql`
@@ -30,6 +32,7 @@ const LOGIN_MUTATION = gql`
 export default function Login() {
   const history = useHistory()
   const { login } = useContext(AuthContext)
+  const [errorMessage, setErrorMessage] = useState<string>('')
 
   const emailAddressState = useTextInputState({
     validations: [
@@ -62,10 +65,21 @@ export default function Login() {
         },
       })
       const token = data?.login.accessToken || ''
+
+      // Tell auth provider that we're logged in
       login(token)
+
+      // Navigate to home
       history.push(RoutePath.Home)
     } catch (err) {
-      console.log(err)
+      const errorCode = getErrorCode(err)
+      switch (errorCode) {
+        case GraphQLErrorCode.InvalidCredentials:
+          setErrorMessage('Your email and password combination are invalid')
+          break
+        default:
+          setErrorMessage('An error has occurred. Please try again later.')
+      }
     }
   }
 
@@ -90,9 +104,10 @@ export default function Login() {
           >
             Pokespeare
           </div>
-          <div style={{ fontSize: 14, color: 'darkgrey' }}>
+          <div style={{ fontSize: 14, color: 'darkgrey', marginBottom: 20 }}>
             The Pokemon search engine with hint of Shakespeare
           </div>
+          {errorMessage && <ErrorBanner message={errorMessage} />}
         </div>
 
         <div style={{ marginBottom: 20 }}>

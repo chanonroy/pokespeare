@@ -14,7 +14,6 @@ const StyledSearchBar = styled.input<{ error?: boolean }>`
   font-size: 14px;
   height: ${SEARCH_BAR_HEIGHT}px;
   width: 100%;
-  margin-bottom: 40px;
   padding: 0 10px 0 50px;
   outline: none;
   user-select: none;

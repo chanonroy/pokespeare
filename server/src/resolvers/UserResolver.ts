@@ -1,4 +1,4 @@
-import { AuthenticationError } from "apollo-server-express";
+import { ApolloError, AuthenticationError } from "apollo-server-express";
 import { compare, hash } from "bcryptjs";
 import { GraphQLError } from "graphql";
 import {
@@ -13,7 +13,7 @@ import {
   UseMiddleware,
 } from "type-graphql";
 import { getRepository } from "typeorm";
-import { ServerContext } from "../@types";
+import { ErrorStatusCodes, ServerContext } from "../@types";
 import { Pokemon } from "../entities/Pokemon";
 import { User } from "../entities/User";
 import { isAuth } from "../middleware/isAuth";
@@ -96,7 +96,7 @@ export class UserResolver {
     const user = await User.findOne({ where: { emailAddress } });
 
     if (user) {
-      throw new GraphQLError("User already exists");
+      throw new ApolloError("User already exists", ErrorStatusCodes.Conflict);
     }
 
     const hashedPassword = await hash(password, 12);
@@ -129,13 +129,19 @@ export class UserResolver {
     const user = await User.findOne({ where: { emailAddress } });
 
     if (!user) {
-      throw new GraphQLError("Your email and password combo is incorrect");
+      throw new ApolloError(
+        "Credentials are invalid",
+        ErrorStatusCodes.InvalidCredentials
+      );
     }
 
     const verify = await compare(password, user.password);
 
     if (!verify) {
-      throw new GraphQLError("Your email and password combo is incorrect");
+      throw new ApolloError(
+        "Credentials are invalid",
+        ErrorStatusCodes.InvalidCredentials
+      );
     }
 
     const accessToken = createAccessToken(user);

@@ -12,3 +12,8 @@ export interface ServerContext {
   res: Response;
   payload?: DecodedAccessToken;
 }
+
+export enum ErrorStatusCodes {
+  InvalidCredentials = "INVALID_CREDENTIALS",
+  Conflict = "CONFLICT",
+}
