@@ -1,10 +1,12 @@
 import { gql, useLazyQuery, useQuery } from '@apollo/client'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
+import { Colors } from '../../@types'
 import {
   GetUserQuery,
   SearchPokemon,
   SearchPokemonVariables,
 } from '../../@types/graphql'
+import Button from '../../components/button'
 import Container from '../../components/container'
 import ErrorBanner from '../../components/error-banner'
 import HeroImage from '../../components/hero-image'
@@ -13,6 +15,7 @@ import SearchBar from '../../components/search-bar'
 import TitleText from '../../components/title-text'
 import useSaveMutation from '../../hooks/use-save-mutation'
 import useUnsaveMutation from '../../hooks/use-unsave-mutation'
+import { AuthContext } from '../../providers/AuthProvider'
 
 const SEARCH_POKEMON_QUERY = gql`
   query SearchPokemon($name: String!) {
@@ -39,6 +42,7 @@ const GET_USER_QUERY = gql`
 `
 
 export default function Home() {
+  const { logout } = useContext(AuthContext)
   const { data: userData } = useQuery<GetUserQuery>(GET_USER_QUERY)
   const [searchPokemon, { data: searchData, loading: searchLoading }] =
     useLazyQuery<SearchPokemon, SearchPokemonVariables>(SEARCH_POKEMON_QUERY)
@@ -85,8 +89,23 @@ export default function Home() {
 
   return (
     <Container style={{ paddingTop: 40, paddingBottom: 40 }}>
-      <div style={{ marginBottom: 40 }}>
-        <HeroImage />
+      <div style={{ textAlign: 'center', marginBottom: 40 }}>
+        <div style={{ marginBottom: 10 }}>
+          <HeroImage />
+        </div>
+        <div
+          style={{
+            color: Colors.primary,
+            fontWeight: 'bold',
+            fontSize: 35,
+            marginBottom: 10,
+          }}
+        >
+          Pokespeare
+        </div>
+        <div style={{ fontSize: 14, color: 'darkgrey', marginBottom: 20 }}>
+          Enter a Pokemon name and press "Enter" to return results.
+        </div>
       </div>
 
       {/* Error Message */}
@@ -97,17 +116,19 @@ export default function Home() {
       )}
 
       {/* Search Input */}
-      <SearchBar
-        placeholder='Enter pokemon name'
-        onChange={(e) => setQuery(e.target.value)}
-        spellCheck='false'
-        loading={searchLoading || saveLoading || unsaveLoading}
-        onKeyUp={({ key }) => {
-          if (key === 'Enter') {
-            handleSearch()
-          }
-        }}
-      />
+      <div style={{ marginBottom: 40 }}>
+        <SearchBar
+          placeholder={'Pikachu'}
+          onChange={(e) => setQuery(e.target.value)}
+          spellCheck='false'
+          loading={searchLoading || saveLoading || unsaveLoading}
+          onKeyUp={({ key }) => {
+            if (key === 'Enter') {
+              handleSearch()
+            }
+          }}
+        />
+      </div>
 
       {/* Search result */}
       {results && (
@@ -139,7 +160,7 @@ export default function Home() {
 
       {/* List of saved pokemon */}
       {savedPokemon && savedPokemon.length > 0 && (
-        <>
+        <div style={{ marginBottom: 30 }}>
           <TitleText>Saved</TitleText>
           {savedPokemon?.map(({ id, name, description }) => (
             <PokemonCard
@@ -151,8 +172,13 @@ export default function Home() {
               onUnsave={() => handleUnsavePokemon(id)}
             />
           ))}
-        </>
+        </div>
       )}
+
+      {/* Log out */}
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <Button onClick={logout}>Logout</Button>
+      </div>
     </Container>
   )
 }
