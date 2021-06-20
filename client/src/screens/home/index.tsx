@@ -1,12 +1,7 @@
-import { gql, useLazyQuery, useQuery } from '@apollo/client'
+import { gql, useQuery } from '@apollo/client'
 import React, { useContext, useState } from 'react'
 import { Colors } from '../../@types'
-import {
-  GetUserQuery,
-  SearchPokemon,
-  SearchPokemonVariables,
-} from '../../@types/graphql'
-import Button from '../../components/button'
+import { GetUserQuery } from '../../@types/graphql'
 import Container from '../../components/container'
 import ErrorBanner from '../../components/error-banner'
 import HeroImage from '../../components/hero-image'
@@ -15,20 +10,11 @@ import SearchBar from '../../components/search-bar'
 import TextButton from '../../components/text-button'
 import TitleText from '../../components/title-text'
 import useSaveMutation from '../../hooks/use-save-mutation'
+import useSearchQuery from '../../hooks/use-search-query'
 import useUnsaveMutation from '../../hooks/use-unsave-mutation'
 import { AuthContext } from '../../providers/AuthProvider'
 
-const SEARCH_POKEMON_QUERY = gql`
-  query SearchPokemon($name: String!) {
-    searchPokemon(name: $name) {
-      id
-      name
-      description
-    }
-  }
-`
-
-const GET_USER_QUERY = gql`
+export const GET_USER_QUERY = gql`
   query GetUserQuery {
     me {
       id
@@ -45,12 +31,12 @@ const GET_USER_QUERY = gql`
 export default function Home() {
   const { logout } = useContext(AuthContext)
   const { data: userData } = useQuery<GetUserQuery>(GET_USER_QUERY)
-  const [searchPokemon, { data: searchData, loading: searchLoading }] =
-    useLazyQuery<SearchPokemon, SearchPokemonVariables>(SEARCH_POKEMON_QUERY)
   const [errorMessage, setErrorMessage] = useState('')
 
   const [query, setQuery] = useState<string>('')
 
+  const [searchPokemon, { data: searchData, loading: searchLoading }] =
+    useSearchQuery()
   const [savePokemon, { loading: saveLoading }] = useSaveMutation()
   const [unsavePokemon, { loading: unsaveLoading }] = useUnsaveMutation()
 
@@ -87,7 +73,6 @@ export default function Home() {
 
   const results = searchData?.searchPokemon
   const savedPokemon = userData?.me.pokemon
-  const emailAddress = userData?.me.emailAddress
 
   return (
     <Container style={{ paddingTop: 40, paddingBottom: 40 }}>
@@ -113,7 +98,7 @@ export default function Home() {
       {/* Error Message */}
       {errorMessage && (
         <div style={{ marginBottom: 40 }}>
-          <ErrorBanner message='Hello' />
+          <ErrorBanner message={errorMessage} />
         </div>
       )}
 

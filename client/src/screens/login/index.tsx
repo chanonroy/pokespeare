@@ -15,10 +15,9 @@ import ValidationError from '../../components/validation-error'
 import useTextInputState from '../../hooks/use-text-input-state'
 import { AuthContext } from '../../providers/AuthProvider'
 import getErrorCode from '../../utils/apollo/getErrorCode'
-
 import { notEmpty, validEmail } from '../../utils/validations'
 
-const LOGIN_MUTATION = gql`
+export const LOGIN_MUTATION = gql`
   mutation LoginMutation($emailAddress: String!, $password: String!) {
     login(input: { emailAddress: $emailAddress, password: $password }) {
       user {
@@ -65,6 +64,7 @@ export default function Login() {
           password: passwordState.cleanValue,
         },
       })
+
       const token = data?.login.accessToken || ''
 
       // Tell auth provider that we're logged in
@@ -118,9 +118,9 @@ export default function Login() {
             onChange={(e) => emailAddressState.onChange(e.target.value)}
             error={emailAddressState.showError}
             placeholder='Enter your email'
-            onKeyUp={({ key }) => {
+            onKeyUp={async ({ key }) => {
               if (key === 'Enter') {
-                handleLogin()
+                await handleLogin()
               }
             }}
           />
@@ -137,9 +137,9 @@ export default function Login() {
             onChange={(e) => passwordState.onChange(e.target.value)}
             error={passwordState.showError}
             placeholder='Enter your password'
-            onKeyUp={({ key }) => {
+            onKeyUp={async ({ key }) => {
               if (key === 'Enter') {
-                handleLogin()
+                await handleLogin()
               }
             }}
           />
