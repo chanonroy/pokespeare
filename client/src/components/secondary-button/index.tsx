@@ -1,14 +1,14 @@
 import styled from 'styled-components'
 import { Colors } from '../../@types'
 
-const Button = styled.button`
+const SecondaryButton = styled.button`
   display: block;
   position: relative;
   cursor: pointer;
-  border: 2px solid ${Colors.primary};
-  background-color: ${Colors.primary};
-  color: white;
+  border: 2px solid whitesmoke;
+  background-color: whitesmoke;
   box-shadow: none;
+  color: darkgrey;
   font-size: 14px;
   border-radius: 5px;
   padding: 12px 20px;
@@ -18,15 +18,20 @@ const Button = styled.button`
   &:hover {
     background-color: ${Colors.primaryAccent};
     border-color: ${Colors.primaryAccent};
+    color: white;
   }
 
   &:active {
     background-color: ${Colors.primary};
+    border-color: ${Colors.primary};
+    color: white;
   }
 
   &:focus {
-    border-color: ${Colors.dark};
+    background-color: lightgrey;
+    border-color: lightgrey;
+    color: white;
   }
 `
 
-export default Button
+export default SecondaryButton

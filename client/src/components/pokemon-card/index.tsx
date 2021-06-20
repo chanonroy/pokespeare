@@ -1,12 +1,13 @@
-import { Heart, HeartFill } from '@styled-icons/octicons'
 import styled from 'styled-components'
 import { Colors } from '../../@types'
+import { ThumbUp, ThumbDown } from '@styled-icons/heroicons-solid'
+import SecondaryButton from '../secondary-button'
 
 const StyledCard = styled.div`
   display: flex;
   background-color: white;
   width: 100%;
-  padding: 20px;
+  padding: 30px;
   border-radius: 10px;
   box-shadow: 0px 5px 15px rgba(59, 59, 59, 0.05);
   margin-bottom: 20px;
@@ -37,34 +38,25 @@ export default function PokemonCard({
           style={{ marginRight: 20 }}
         />
       </div>
-      <div style={{ paddingRight: 20, width: '100%' }}>
+      <div style={{ width: '100%' }}>
         <div
           style={{ fontWeight: 'bold', color: Colors.dark, marginBottom: 10 }}
         >
           <span style={{ marginRight: 5 }}>{name}</span>
           <span style={{ color: 'darkgrey' }}>#{id}</span>
         </div>
-        <div style={{ color: 'darkgrey' }}>{description}</div>
-      </div>
-      <div>
+        <div style={{ color: 'darkgrey', marginBottom: 20 }}>{description}</div>
+
         {saved ? (
-          <HeartFill
-            height={16}
-            color={'#e74c3c'}
-            style={{ cursor: 'pointer' }}
-            onClick={() => {
-              if (onUnsave) onUnsave()
-            }}
-          />
+          <SecondaryButton onClick={onUnsave}>
+            <ThumbDown height={15} style={{ height: 15, marginRight: 5 }} />
+            Remove
+          </SecondaryButton>
         ) : (
-          <Heart
-            height={16}
-            color='darkgrey'
-            style={{ cursor: 'pointer' }}
-            onClick={() => {
-              if (onSave) onSave()
-            }}
-          />
+          <SecondaryButton onClick={onSave}>
+            <ThumbUp height={15} style={{ height: 15, marginRight: 5 }} />
+            Save
+          </SecondaryButton>
         )}
       </div>
     </StyledCard>
