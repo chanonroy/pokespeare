@@ -15,4 +15,5 @@ export enum RoutePath {
 
 export enum GraphQLErrorCode {
   InvalidCredentials = 'INVALID_CREDENTIALS',
+  Conflict = 'CONFLICT',
 }

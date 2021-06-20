@@ -1,18 +1,20 @@
 import { gql, useMutation } from '@apollo/client'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { Colors, RoutePath } from '../../@types'
+import { Colors, GraphQLErrorCode, RoutePath } from '../../@types'
 import { SignUpMutation, SignUpMutationVariables } from '../../@types/graphql'
 import ActivityIcon from '../../components/activity-icon'
 import Button from '../../components/button'
 import Card from '../../components/card'
 import Container from '../../components/container'
+import ErrorBanner from '../../components/error-banner'
 import HeroImage from '../../components/hero-image'
 import TextInput from '../../components/text-input'
 import TextInputLabel from '../../components/text-input-label'
 import ValidationError from '../../components/validation-error'
 import useTextInputState from '../../hooks/use-text-input-state'
 import { AuthContext } from '../../providers/AuthProvider'
+import { getErrorCode } from '../../utils/apolloUtils'
 import { isMatch, notEmpty, validEmail } from '../../utils/validations'
 
 const SIGN_UP_MUTATION = gql`
@@ -30,6 +32,7 @@ const SIGN_UP_MUTATION = gql`
 export default function SignUp() {
   const history = useHistory()
   const { login } = useContext(AuthContext)
+  const [errorMessage, setErrorMessage] = useState<string>('')
 
   const emailAddressState = useTextInputState({
     validations: [notEmpty('Email is required'), validEmail('Invalid email')],
@@ -66,10 +69,21 @@ export default function SignUp() {
         },
       })
       const token = data?.signUp.accessToken || ''
+
+      // Tell auth provider that we're logged in
       login(token)
+
+      // Navigate to home
       history.push(RoutePath.Home)
     } catch (err) {
-      console.log(err)
+      const errorCode = getErrorCode(err)
+      switch (errorCode) {
+        case GraphQLErrorCode.Conflict:
+          setErrorMessage('This user already exists. Please login normally.')
+          break
+        default:
+          setErrorMessage('An error has occurred. Please try again later.')
+      }
     }
   }
 
@@ -89,9 +103,10 @@ export default function SignUp() {
           >
             Join the party
           </div>
-          <div style={{ fontSize: 14, color: 'darkgrey' }}>
+          <div style={{ fontSize: 14, color: 'darkgrey', marginBottom: 20 }}>
             To sign up, or not to sign up: that is the question
           </div>
+          {errorMessage && <ErrorBanner message={errorMessage} />}
         </div>
 
         <div style={{ marginBottom: 20 }}>
