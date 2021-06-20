@@ -4,8 +4,8 @@ export const saveAccessToken = (value: string) => {
   localStorage.setItem(TOKEN_KEY, value)
 }
 
-export const getAccessToken = (): string => {
-  return localStorage.getItem(TOKEN_KEY) || ''
+export const getAccessToken = (): string | null => {
+  return localStorage.getItem(TOKEN_KEY)
 }
 
 export const clearAccessToken = () => {
