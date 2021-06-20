@@ -12,6 +12,7 @@ import ErrorBanner from '../../components/error-banner'
 import HeroImage from '../../components/hero-image'
 import PokemonCard from '../../components/pokemon-card'
 import SearchBar from '../../components/search-bar'
+import TextButton from '../../components/text-button'
 import TitleText from '../../components/title-text'
 import useSaveMutation from '../../hooks/use-save-mutation'
 import useUnsaveMutation from '../../hooks/use-unsave-mutation'
@@ -86,6 +87,7 @@ export default function Home() {
 
   const results = searchData?.searchPokemon
   const savedPokemon = userData?.me.pokemon
+  const emailAddress = userData?.me.emailAddress
 
   return (
     <Container style={{ paddingTop: 40, paddingBottom: 40 }}>
@@ -160,7 +162,7 @@ export default function Home() {
 
       {/* List of saved pokemon */}
       {savedPokemon && savedPokemon.length > 0 && (
-        <div style={{ marginBottom: 30 }}>
+        <div style={{ marginBottom: 40 }}>
           <TitleText>Saved</TitleText>
           {savedPokemon?.map(({ id, name, description }) => (
             <PokemonCard
@@ -177,7 +179,7 @@ export default function Home() {
 
       {/* Log out */}
       <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <Button onClick={logout}>Logout</Button>
+        <TextButton onClick={logout}>Logout</TextButton>
       </div>
     </Container>
   )
