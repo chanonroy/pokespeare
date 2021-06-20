@@ -14,7 +14,8 @@ import TextInputLabel from '../../components/text-input-label'
 import ValidationError from '../../components/validation-error'
 import useTextInputState from '../../hooks/use-text-input-state'
 import { AuthContext } from '../../providers/AuthProvider'
-import { getErrorCode } from '../../utils/apolloUtils'
+import getErrorCode from '../../utils/apollo/getErrorCode'
+
 import { notEmpty, validEmail } from '../../utils/validations'
 
 const LOGIN_MUTATION = gql`
