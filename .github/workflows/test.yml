@@ -2,6 +2,7 @@ name: test
 on: push
 jobs:
   client:
+    name: "client"
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v2
@@ -20,6 +21,7 @@ jobs:
       run: yarn client:test --ci
 
    server:
+    name: "server"
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v2
