@@ -17,7 +17,7 @@ import { AuthContext } from '../../providers/AuthProvider'
 import getErrorCode from '../../utils/apollo/getErrorCode'
 import { isMatch, notEmpty, validEmail } from '../../utils/validations'
 
-const SIGN_UP_MUTATION = gql`
+export const SIGN_UP_MUTATION = gql`
   mutation SignUpMutation($emailAddress: String!, $password: String!) {
     signUp(input: { emailAddress: $emailAddress, password: $password }) {
       user {
@@ -116,9 +116,9 @@ export default function SignUp() {
             onChange={(e) => emailAddressState.onChange(e.target.value)}
             error={emailAddressState.showError}
             placeholder='Enter your email'
-            onKeyUp={({ key }) => {
+            onKeyUp={async ({ key }) => {
               if (key === 'Enter') {
-                handleSignUp()
+                await handleSignUp()
               }
             }}
           />
@@ -135,9 +135,9 @@ export default function SignUp() {
             onChange={(e) => passwordState.onChange(e.target.value)}
             error={passwordState.showError}
             placeholder='Enter a good password'
-            onKeyUp={({ key }) => {
+            onKeyUp={async ({ key }) => {
               if (key === 'Enter') {
-                handleSignUp()
+                await handleSignUp()
               }
             }}
           />
@@ -154,9 +154,9 @@ export default function SignUp() {
             onChange={(e) => confirmPasswordState.onChange(e.target.value)}
             error={confirmPasswordState.showError}
             placeholder='Confirm your password'
-            onKeyUp={({ key }) => {
+            onKeyUp={async ({ key }) => {
               if (key === 'Enter') {
-                handleSignUp()
+                await handleSignUp()
               }
             }}
           />
