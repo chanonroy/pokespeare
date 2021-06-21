@@ -1,0 +1,21 @@
+name: test:client
+on: push
+jobs:
+  client:
+    name: "client"
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: actions/setup-node@v1
+      with:
+        node-version: "14.x"
+
+    - name: Install modules
+      run: yarn install --frozen-lockfile
+
+    - name: Run lint
+      run: yarn client:lint
+
+    - name: Run tests
+      run: yarn client:test --ci

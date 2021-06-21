@@ -1,5 +1,11 @@
 {
-  "dependencies": {
-    "@styled-icons/heroicons-solid": "^10.34.0"
+  "private": true,
+  "name": "pokespeare",
+  "workspaces": ["client", "server"],
+  "scripts": {
+    "client:test": "yarn workspace client test",
+    "client:lint": "yarn workspace client lint",
+    "server:test": "yarn workspace server test",
+    "server:lint": "yarn workspace server lint"
   }
 }
