@@ -1,0 +1,11 @@
+{
+  "private": true,
+  "name": "pokespeare",
+  "workspaces": ["client", "server"],
+  "scripts": {
+    "test:client": "yarn workspace client test",
+    "lint:client": "yarn workspace client lint",
+    "test:server": "yarn workspace server test",
+    "lint:server": "yarn workspace server lint"
+  }
+}
