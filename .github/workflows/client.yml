@@ -1,5 +1,8 @@
 name: CI
-on: push
+on:
+  push:
+    paths:
+      - "client/**"
 jobs:
   build:
     runs-on: ubuntu-18.04
