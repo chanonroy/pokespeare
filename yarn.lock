@@ -2113,6 +2113,14 @@
     "@babel/runtime" "^7.14.0"
     "@styled-icons/styled-icon" "^10.6.3"
 
+"@styled-icons/heroicons-solid@^10.34.0":
+  version "10.34.0"
+  resolved "https://registry.yarnpkg.com/@styled-icons/heroicons-solid/-/heroicons-solid-10.34.0.tgz#1698aab34b9f0250a5b3143e614c4727e29ca953"
+  integrity sha512-TmksktyCPv0nf/xg3S0pryYfCRkgpGtAfkJd9rKF4NlrJw9HWx1Ha6KrOKIwu0cvmn9vvjU8L4+2wVBD6XXdjA==
+  dependencies:
+    "@babel/runtime" "^7.14.0"
+    "@styled-icons/styled-icon" "^10.6.3"
+
 "@styled-icons/octicons@^10.34.0":
   version "10.34.0"
   resolved "https://registry.yarnpkg.com/@styled-icons/octicons/-/octicons-10.34.0.tgz#6d532486d09b418f9e8113cd2bcf1ac5872ab9ab"
