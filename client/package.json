@@ -7,6 +7,7 @@
     "@styled-icons/entypo": "^10.34.0",
     "@styled-icons/evil": "^10.34.0",
     "@styled-icons/fluentui-system-regular": "^10.34.0",
+    "@styled-icons/heroicons-solid": "^10.34.0",
     "@styled-icons/octicons": "^10.34.0",
     "@types/jest": "^26.0.15",
     "@types/node": "^12.0.0",
