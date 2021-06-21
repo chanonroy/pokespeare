@@ -1,3 +1,4 @@
+import { useApolloClient } from '@apollo/client'
 import { createContext, ReactElement, useState } from 'react'
 import {
   clearAccessToken,
@@ -14,6 +15,7 @@ interface AuthContextType {
 export const AuthContext = createContext({} as AuthContextType)
 
 export default function AuthProvider({ children }: { children: ReactElement }) {
+  const apolloClient = useApolloClient()
   const [loggedIn, setLoggedIn] = useState(!!getAccessToken())
 
   return (
@@ -21,12 +23,12 @@ export default function AuthProvider({ children }: { children: ReactElement }) {
       value={{
         loggedIn,
         login: (newAccessToken) => {
-          // todo: clear Apollo cache
+          apolloClient.clearStore()
           saveAccessToken(newAccessToken)
           setLoggedIn(true)
         },
         logout: () => {
-          // todo: clear Apollo cache
+          apolloClient.clearStore()
           clearAccessToken()
           setLoggedIn(false)
         },
